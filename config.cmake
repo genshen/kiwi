@@ -1,0 +1,4 @@
+# configures
+set(UMBRELLA_NAME ${PROJECT_NAME}) # project name
+set(UMBRELLA_LIB_NAME ${UMBRELLA_NAME})
+set(UMBRELLA_BUILD_TESTS ON)
