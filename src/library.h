@@ -1,6 +1,6 @@
-#ifndef UMBRELLA_LIBRARY_H
-#define UMBRELLA_LIBRARY_H
+#ifndef KIWI_LIBRARY_H
+#define KIWI_LIBRARY_H
 
 void hello();
 
-#endif
+#endif // KIWI_LIBRARY_H

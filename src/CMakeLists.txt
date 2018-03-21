@@ -1,6 +1,25 @@
 # src directory
-set(UMBRELLA_SOURCE_FILES library.cpp)
-set(UMBRELLA_HEADER_FILES library.h)
+include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
+
+set(KIWI_SOURCE_FILES library.cpp)
+set(KIWI_HEADER_FILES library.h)
 
 # todo bin lib, install
-add_library(${UMBRELLA_LIB_NAME} ${UMBRELLA_SOURCE_FILES} ${UMBRELLA_HEADER_FILES})
+# set binary path and lib storage path for compiling process.
+#set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+#set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+
+add_library(${KIWI_LIB_NAME} ${KIWI_SOURCE_FILES} ${KIWI_HEADER_FILES})
+
+
+##########################
+##### install files
+##########################
+install(TARGETS ${KIWI_LIB_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        )
+
+install(FILES ${HEADER_FILES} DESTINATION include) # todo head file
+

@@ -1,7 +1,7 @@
 {
-  "name": "exampleProgram",
+  "name": "kiwi",
   "version": "1.0.0",
-  "description": "an example program.",
+  "description": "A framework for parallel.",
   "author": "genshen <genshenchu@gmail.com>",
   "commands": {
     "debug": "cmake ../",
