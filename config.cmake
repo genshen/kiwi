@@ -11,4 +11,4 @@ option(KIWI_BUILD_DOCS "Build docs" ON)
 set(KIWI_LIB_NAME ${KIWI_NAME})
 
 # test
-set(KIWI_UINT_TEST_NAME "KIWI-test")
+set(KIWI_UINT_TEST_NAME "kiwi-test")

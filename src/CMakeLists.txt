@@ -1,8 +1,26 @@
 # src directory
 include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 
-set(KIWI_SOURCE_FILES library.cpp)
-set(KIWI_HEADER_FILES library.h)
+
+set(KIWI_HEADER_FILES
+        base_app.h
+        library.h
+        config/config.h
+        utils/data_def.h
+        utils/bundle.h
+        utils/io_writer.h
+        utils/mpi_utils.h
+        )
+
+set(KIWI_SOURCE_FILES
+        base_app.cpp
+        library.cpp
+        config/config.cpp
+        utils/bundle.cpp
+        utils/io_writer.cpp
+        utils/mpi_utils.cpp
+        )
+
 
 # todo bin lib, install
 # set binary path and lib storage path for compiling process.
@@ -21,5 +39,5 @@ install(TARGETS ${KIWI_LIB_NAME}
         ARCHIVE DESTINATION lib
         )
 
-install(FILES ${HEADER_FILES} DESTINATION include) # todo head file
+install(FILES ${KIWI_HEADER_FILES} DESTINATION include) # todo head file
 
