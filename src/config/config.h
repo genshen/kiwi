@@ -5,7 +5,7 @@
 #ifndef KIWI_CONFIG_H
 #define KIWI_CONFIG_H
 
-
+#include <memory>
 #include <string>
 #include "../utils/bundle.h"
 
