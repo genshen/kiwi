@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <toml.hpp>
 #include "../utils/bundle.h"
 
 namespace kiwi {
@@ -31,6 +32,8 @@ namespace kiwi {
 
     protected:
 
+        config();
+
         // resolve config file.
         void resolve(const std::string &configureFilePath);
 
@@ -38,15 +41,11 @@ namespace kiwi {
         void resolveConfig(std::shared_ptr<cpptoml::table> table) = 0;
 
         virtual // you can override the method to pack data into buffer.
-        void putConfigData(Bundle &Bundle)= 0;
+        void putConfigData(Bundle &bundle)= 0;
 
         virtual // you can override the method to unpack data into buffer.
-        void getConfigData(kiwi::Bundle &Bundle)= 0;
+        void getConfigData(kiwi::Bundle &bundle)= 0;
 
-    protected:
-        static config *pConfigInstance;
-
-        config();
     };
 
 }

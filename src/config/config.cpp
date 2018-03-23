@@ -3,31 +3,13 @@
 //
 
 #include <fstream>
-#include <toml.hpp>
 #include "config.h"
 #include "../utils/bundle.h"
 #include "../utils/mpi_utils.h"
 
 namespace kiwi {
-    config *config::pConfigInstance = nullptr;
 
     config::config() : hasError(false) {}
-
-    // a simple single mode example.
-//    config *config::newInstance() {
-//        if (pConfigInstance == nullptr) {
-//            pConfigInstance = new config();
-//        }
-//        return pConfigInstance; // make sure there is a configure instance.
-//    }
-//
-//    config *config::newInstance(const std::string &configureFilePath) {
-//        if (pConfigInstance == nullptr) {
-//            pConfigInstance = new config();
-//            resolve(configureFilePath);
-//        }
-//        return pConfigInstance;
-//    }
 
     // only for master processor.
     void config::resolve(const std::string &configureFilePath) {

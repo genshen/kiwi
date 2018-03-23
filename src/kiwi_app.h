@@ -11,26 +11,33 @@ namespace kiwi {
      * beforeCreate() -> create -> onCreate() -> prepare()
      * <!-- > start()--> -> onStart() -> beforeDestroy() -> destroy -> onDestroy()
      */
-    class baseApp {
+    class kiwiApp {
     public:
 
         void run(int argc, char *argv[]);
 
+        /**
+         * exit this program before finishing running.
+         * please call this function after @link#create
+         * @param code  exit code.
+         */
+        void abort(int code);
+
     protected:
 
-        bool beforeCreate();
+        virtual bool beforeCreate();
 
-        void onCreate();
+        virtual void onCreate();
 
-        bool prepare();
+        virtual bool prepare();
 
-        void onStart();
+        virtual void onStart();
 
-        void beforeDestroy();
+        virtual void beforeDestroy();
 
-        void onFinish();
+        virtual void onFinish();
 
-        void onDestroy();
+        virtual void onDestroy();
 
     private:
         // initial mpi env for application.

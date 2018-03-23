@@ -1,9 +1,9 @@
 # src directory
 include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
-set(KIWI_EXPORT_INCLUDE_PATH ${PROJECT_SOURCE_DIR}/vendor/include ${PROJECT_SOURCE_DIR}/src CACHE STRING "kiwi_inclue_path")
+set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/vendor/include" "${PROJECT_SOURCE_DIR}/src" CACHE STRING "kiwi_inclue_path")
 
 set(KIWI_HEADER_FILES
-        base_app.h
+        kiwi_app.h
         library.h
         config/config.h
         utils/data_def.h
@@ -13,7 +13,7 @@ set(KIWI_HEADER_FILES
         )
 
 set(KIWI_SOURCE_FILES
-        base_app.cpp
+        kiwi_app.cpp
         library.cpp
         config/config.cpp
         utils/bundle.cpp
