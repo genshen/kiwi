@@ -13,7 +13,9 @@ MESSAGE(STATUS "MPI in test: ${KIWI_TEST_MPI_ENABLE}")
 # download googletest from https://github.com/google/googletest/,and copy it to "external" directory.
 # Include the gtest library. gtest_SOURCE_DIR is available due to 'project(gtest)' above.
 # an issue for mingw on winodws, see: https://github.com/google/googletest/issues/606#issuecomment-234733757
-add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/googletest/googletest ${PROJECT_BINARY_DIR}/vendor/googletest)
+if(NOT TARGET gtest)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/googletest/googletest ${PROJECT_BINARY_DIR}/vendor/googletest)
+endif()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 #googlemock

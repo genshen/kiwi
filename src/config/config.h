@@ -11,15 +11,19 @@
 
 namespace kiwi {
 
+    /**
+     * config component.
+     * new config -> resolve() -> resolveConfig -> sync()
+     */
     class config {
     public:
         bool hasError = false;
         std::string errorMessage;
 
         // make a new instance without resolving config file.
-        config *newInstance();
+//        config *newInstance();
 
-        config *newInstance(const std::string &configureFilePath);
+//        config *newInstance(const std::string &configureFilePath);
 
         void sync();
 
@@ -28,7 +32,7 @@ namespace kiwi {
     protected:
 
         // resolve config file.
-        void resolve(const std::string &basic_string);
+        void resolve(const std::string &configureFilePath);
 
         virtual
         void resolveConfig(std::shared_ptr<cpptoml::table> table) = 0;

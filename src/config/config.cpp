@@ -29,6 +29,7 @@ namespace kiwi {
 //        return pConfigInstance;
 //    }
 
+    // only for master processor.
     void config::resolve(const std::string &configureFilePath) {
         std::ifstream ifs(configureFilePath);
         if (!ifs.good()) {
@@ -39,6 +40,7 @@ namespace kiwi {
         resolveConfig(conf);
     }
 
+    // only for master.
     void config::setError(const std::string &msg) {
         errorMessage = msg;
         hasError = true;
