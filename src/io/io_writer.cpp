@@ -15,7 +15,7 @@ kiwi::IOWriter::IOWriter(const std::string &filename, long headerSize, long bloc
                                MPI_MODE_CREATE | MPI_MODE_WRONLY,
                                MPI_INFO_NULL, &pFile);
     if (status == -1) { // todo no output.
-        std::cout << "ERROR,open file" << filename << "failed" << std::endl;
+        std::cout << "ERROR, open file " << filename << " failed" << std::endl;
         exit(1);
     }
 

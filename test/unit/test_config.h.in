@@ -4,6 +4,6 @@
 
 #cmakedefine CATCH2_TEST_ENABLE_FLAG
 #cmakedefine GOOGLE_TEST_ENABLE_FLAG
-#cmakedefine KIWI_EXTRA_LIBS
+#cmakedefine KIWI_TEST_MPI_ENABLE
 
 #endif // KIWI_TEST_CONFIG_H

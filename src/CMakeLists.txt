@@ -6,9 +6,9 @@ set(KIWI_HEADER_FILES
         kiwi_app.h
         library.h
         config/config.h
+        io/io_writer.h
         utils/data_def.h
         utils/bundle.h
-        utils/io_writer.h
         utils/mpi_utils.h
         )
 
@@ -16,8 +16,8 @@ set(KIWI_SOURCE_FILES
         kiwi_app.cpp
         library.cpp
         config/config.cpp
+        io/io_writer.cpp
         utils/bundle.cpp
-        utils/io_writer.cpp
         utils/mpi_utils.cpp
         )
 

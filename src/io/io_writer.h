@@ -6,8 +6,8 @@
 #define KIWI_SYS_DUMP_H
 
 #include <string>
-#include "mpi_utils.h"
-#include "data_def.h"
+#include "../utils/mpi_utils.h"
+#include "../utils/data_def.h"
 
 
 /*
