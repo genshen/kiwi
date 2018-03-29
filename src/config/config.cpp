@@ -15,7 +15,7 @@ namespace kiwi {
     void config::resolve(const std::string &configureFilePath) {
         std::ifstream ifs(configureFilePath);
         if (!ifs.good()) {
-            setError("can not access the configure file");
+            setError("can not access the configure file: " + configureFilePath);
             return;
         }
         auto conf = cpptoml::parse_file(configureFilePath); // todo exception

@@ -25,7 +25,7 @@ namespace kiwi {
 
     protected:
 
-        virtual bool beforeCreate();
+        virtual bool beforeCreate(int argc, char *argv[]);
 
         virtual void onCreate();
 
@@ -37,11 +37,12 @@ namespace kiwi {
 
         virtual void onFinish();
 
+        // do not use mpi in onDestroy.
         virtual void onDestroy();
 
     private:
         // initial mpi env for application.
-        bool create(int argc, char *argv[]);
+        bool create(int argc,char *argv[]);
 
         // start app
         void start();

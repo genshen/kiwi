@@ -5,10 +5,9 @@
 #include "kiwi_app.h"
 #include "utils/mpi_utils.h"
 
-void kiwi::kiwiApp::run(int argc, char **argv) {
-// app's lifecycle here.
-//    auto *app = new crystalMD(argc, argv);
-    if (this->beforeCreate()) {
+void kiwi::kiwiApp::run(int argc, char *argv[]) {
+    // app's lifecycle here.
+    if (this->beforeCreate(argc, argv)) {
         if (this->create(argc, argv)) {
             this->onCreate();
             if (this->prepare()) {
@@ -25,7 +24,7 @@ void kiwi::kiwiApp::run(int argc, char **argv) {
     }
 }
 
-bool kiwi::kiwiApp::beforeCreate() {
+bool kiwi::kiwiApp::beforeCreate(int argc, char *argv[]) {
     return true;
 }
 
