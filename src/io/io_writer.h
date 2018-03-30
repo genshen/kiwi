@@ -64,7 +64,7 @@ namespace kiwi {
 
 // methods implements.
     template<typename T>
-    long IOWriter::write(T *b, long start, long size) {
+    long IOWriter::write(T *b, long start, long size) { // todo size type (unsigned long)
         MPI_File_write(pFile, b + start, size * sizeof(T), MPI_BYTE, MPI_STATUS_IGNORE);
         return size;
     }

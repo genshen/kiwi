@@ -16,6 +16,7 @@ set(KIWI_SOURCE_FILES
         kiwi_app.cpp
         library.cpp
         config/config.cpp
+        io/io_utils.hpp
         io/io_writer.cpp
         utils/bundle.cpp
         utils/mpi_utils.cpp

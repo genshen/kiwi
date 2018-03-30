@@ -11,8 +11,8 @@ using namespace std;
 namespace kiwi {
     namespace mpiUtils {
 
-        int ownRank;
-        int allRanks;
+        RID ownRank;
+        RID allRanks;
 
         void initialMPI(int argc, char *argv[]) {
             MPI_Init(&argc, &argv);

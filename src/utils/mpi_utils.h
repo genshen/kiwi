@@ -3,6 +3,7 @@
 //
 
 #include "mpi.h"
+#include "data_def.h"
 
 #ifndef KIWI_MPI_UTILS_H
 #define KIWI_MPI_UTILS_H
@@ -12,8 +13,8 @@ namespace kiwi {
 
     namespace mpiUtils {
         // you can use ownRank and allRanks after called function initialMPI in tiny_fmm.h
-        extern int ownRank;
-        extern int allRanks;
+        extern RID ownRank;
+        extern RID allRanks;
 
         void initialMPI(int argc, char *argv[]);
 
