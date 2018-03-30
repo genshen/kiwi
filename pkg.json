@@ -24,13 +24,19 @@
         "path": "https://github.com/catchorg/Catch2/releases/download/v2.1.2",
         "files": {
           "catch.hpp": "catch2.hpp"
-        }
+        },
+        "build": [
+          "CP catch2.hpp {INCLUDE}"
+        ]
       },
       "cpptoml": {
         "path": "https://raw.githubusercontent.com/skystrife/cpptoml/master/include",
         "files": {
           "cpptoml.h": "toml.hpp"
-        }
+        },
+        "build": [
+          "CP toml.hpp {INCLUDE}"
+        ]
       }
     }
   }
