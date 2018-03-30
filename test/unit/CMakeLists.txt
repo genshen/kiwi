@@ -5,7 +5,7 @@ configure_file(
         "${PROJECT_SOURCE_DIR}/test/unit/test_config.h"
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
+include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(TEST_HEADER_FILES

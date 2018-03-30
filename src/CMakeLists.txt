@@ -1,6 +1,6 @@
 # src directory
-include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
-set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/vendor/include" "${PROJECT_SOURCE_DIR}/src" CACHE STRING "kiwi_inclue_path")
+include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
+set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/vendor/pkg/include" "${PROJECT_SOURCE_DIR}/src" CACHE STRING "kiwi_inclue_path")
 
 set(KIWI_HEADER_FILES
         kiwi_app.h
