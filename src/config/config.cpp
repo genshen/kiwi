@@ -20,6 +20,7 @@ namespace kiwi {
         }
         auto conf = cpptoml::parse_file(configureFilePath); // todo exception
         resolveConfig(conf);
+        ifs.close();
     }
 
     // only for master.

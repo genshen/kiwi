@@ -20,7 +20,7 @@ set(KIWI_SOURCE_FILES
         io/io_writer.cpp
         utils/bundle.cpp
         utils/mpi_utils.cpp
-        )
+        event/message_looper.cpp event/message_looper.h event/message_runner.h)
 
 # todo bin lib, install
 # set binary path and lib storage path for compiling process.

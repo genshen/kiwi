@@ -1,0 +1,60 @@
+//
+// Created by genshen on 2018-04-06.
+//
+
+#ifndef KIWI_MESSAGE_LOOPER_H
+#define KIWI_MESSAGE_LOOPER_H
+
+#include <list>
+#include "message_runner.h"
+/**
+ * This class implement a message loop.
+ * In this loop, MessageRunner can be registered {@note before starting loop}.
+ * Then, the loop start to listen message (e.g. MPI message),
+ * and dispatch different message to different runner.
+ * Usage:
+ *  1. register runner first, the runner must inherit from class {@see MessageRunner}.
+ *  2. then, call kiwi::MessageLooper::start();
+ * Note, run start method in {@note: a new thread} is a recommended,
+ * because loop will not exist until all runner's shouldDetach method returns true.
+ */
+namespace kiwi {
+    class MessageLooper {
+    public:
+        /**
+         * Start message looper.
+         * This method will run message listening in a nearly dead loop.
+         * When a message reaches, the looper dispatcher will dispatch the message to corresponding runner.
+         * Then the runner will handle the message (processor the message).
+         */
+        static void start();
+
+        /**
+         * Register a runner. The runner specified by {@var runner} will be added to the list.
+         * The runner must inherit from class {@see MessageRunner} and implement its abstract methods.
+         * @param runner the new runner.
+         */
+        static void registerRunner(MessageRunner &runner);
+
+        /**
+         * unregister a runner.
+         * Then the runner will be detached form message loop.
+         * @param runner the message runner to be unregistered.
+         */
+        static void unRegisterRunner(MessageRunner &runner);
+
+    private:
+        /**
+         * Travel all runner in {@var _runners}, check each runner should be detached.
+         * @return True: all runner's shouldDetach method returns true or {@var _runners is empty}, then the message loop will exits.
+         *         False for otherwise, the message loop will continue run.
+         */
+        static bool shouldExistLoop();
+
+        // collection of all message runners. todo read-write lock.
+        static std::list<MessageRunner> _runners;
+    };
+}
+
+
+#endif //KIWI_MESSAGE_LOOPER_H
