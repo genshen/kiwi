@@ -6,6 +6,8 @@ set(KIWI_HEADER_FILES
         kiwi_app.h
         library.h
         config/config.h
+        event/message_looper.h
+        event/message_runner.h
         io/io_writer.h
         utils/data_def.h
         utils/bundle.h
@@ -16,11 +18,12 @@ set(KIWI_SOURCE_FILES
         kiwi_app.cpp
         library.cpp
         config/config.cpp
+        event/message_looper.cpp
         io/io_utils.hpp
         io/io_writer.cpp
         utils/bundle.cpp
         utils/mpi_utils.cpp
-        event/message_looper.cpp event/message_looper.h event/message_runner.h)
+        )
 
 # todo bin lib, install
 # set binary path and lib storage path for compiling process.

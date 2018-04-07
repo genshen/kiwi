@@ -4,11 +4,13 @@
 
 #include <io/io_utils.hpp>
 #include <gtest/gtest.h>
+#include <utils/mpi_utils.h>
 #include "../test_config.h"
 
 const std::string TestFilename = KIWI_TEST_TEMP_STORAGE_PATH "/test_io_utils.bin";
 
 TEST(io_utils_write_test_char, io_utils_write_test) {
+    SINGLE_PROCESSOR_TEST
     char chA = 'A', chA_read;
 
     std::fstream fs(TestFilename, std::ios::out | std::ios::binary);
@@ -23,6 +25,7 @@ TEST(io_utils_write_test_char, io_utils_write_test) {
 }
 
 TEST(io_utils_write_test_string, io_utils_write_test) {
+    SINGLE_PROCESSOR_TEST
     char str1[] = "ABCD", str2[5] = {0};
 
     std::fstream fs(TestFilename, std::ios::out | std::ios::binary);
@@ -37,6 +40,7 @@ TEST(io_utils_write_test_string, io_utils_write_test) {
 }
 
 TEST(io_utils_write_test_long, io_utils_write_test) {
+    SINGLE_PROCESSOR_TEST
     long long1 = 1024, long2;
 
     std::fstream fs(TestFilename, std::ios::out | std::ios::binary);

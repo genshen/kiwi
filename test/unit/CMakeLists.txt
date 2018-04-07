@@ -19,10 +19,12 @@ set(KIWI_TEST_SOURCE_FILES
         main.cpp
         app_test.cpp
         config/config.cpp
+        event/message_loop_test.cpp
         io/io_utils_test.cpp
         io/io_writer_test.cpp
         utils/bundle_test.cpp
-        utils/mpi_utils_test.cpp)
+        utils/mpi_utils_test.cpp
+        )
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

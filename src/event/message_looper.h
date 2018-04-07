@@ -17,6 +17,7 @@
  *  2. then, call kiwi::MessageLooper::start();
  * Note, run start method in {@note: a new thread} is a recommended,
  * because loop will not exist until all runner's shouldDetach method returns true.
+ * And runners in message loop will be unregistered automatically before loop finished.
  */
 namespace kiwi {
     class MessageLooper {
@@ -32,27 +33,32 @@ namespace kiwi {
         /**
          * Register a runner. The runner specified by {@var runner} will be added to the list.
          * The runner must inherit from class {@see MessageRunner} and implement its abstract methods.
+         *
+         * The memory of this runner will be released in unRegisterRunner method automatically
+         * if this runner's shouldDetach method returns true.
          * @param runner the new runner.
          */
-        static void registerRunner(MessageRunner &runner);
+        static void registerRunner(MessageRunner *runner);
 
         /**
          * unregister a runner.
          * Then the runner will be detached form message loop.
          * @param runner the message runner to be unregistered.
+         * @deprecated
          */
-        static void unRegisterRunner(MessageRunner &runner);
+        static void unRegisterRunner(MessageRunner *runner);
 
     private:
         /**
-         * Travel all runner in {@var _runners}, check each runner should be detached.
+         * Travel all runners in {@var _runners}, check each runner should be detached.
+         * And clean up all detached runners.
          * @return True: all runner's shouldDetach method returns true or {@var _runners is empty}, then the message loop will exits.
          *         False for otherwise, the message loop will continue run.
          */
         static bool shouldExistLoop();
 
         // collection of all message runners. todo read-write lock.
-        static std::list<MessageRunner> _runners;
+        static std::list<MessageRunner *> _runners;
     };
 }
 

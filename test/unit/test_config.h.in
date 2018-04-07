@@ -7,4 +7,13 @@
 #cmakedefine KIWI_TEST_MPI_ENABLE
 #cmakedefine KIWI_TEST_TEMP_STORAGE_PATH "${KIWI_TEST_TEMP_STORAGE_PATH}"
 
+// if the test only runs on single process, add this define to the first line of TEST.
+// Only runs on master processor.
+#define SINGLE_PROCESSOR_TEST \
+{ \
+  if (kiwi::mpiUtils::ownRank != MASTER_PROCESSOR){ \
+    return; \
+  } \
+}
+
 #endif // KIWI_TEST_CONFIG_H
