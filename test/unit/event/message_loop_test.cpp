@@ -15,6 +15,10 @@ public:
     bool message_received = false;
     int message_data = 0;
 
+    void onAttach() override {}
+
+    void onDetach() override {}
+
     bool shouldDetach() const override { // detach this runner from message loop, if message have been received.
         return message_received;
     }
