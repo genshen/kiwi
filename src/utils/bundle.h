@@ -15,7 +15,7 @@
  *
  * usage:
  * dataPack *pack = new dataPack();
- * pack-> newPackBuffer(128); // initial buffer,the buffer cap is 128.
+ * pack-> newPackBuffer(128); // initialize buffer,the buffer cap is 128.
  * pack->append(0x12); // pack int
  * pack->append("hello"); // pack string
  * pack->releasePackBuffer(); // release buffer.
@@ -33,7 +33,7 @@ namespace kiwi {
 
         ~Bundle(); // release buffer here (you can also release buffer by calling releasePackBuffer().
 
-        // initial pack buffer, cap is the capacity of packBuffer.
+        // Initialize pack buffer, cap is the capacity of packBuffer.
         void newPackBuffer(const unsigned int cap);
 
         // clean pack buffer after we won't use the buffer any more.

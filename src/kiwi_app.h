@@ -41,7 +41,7 @@ namespace kiwi {
         virtual void onDestroy();
 
     private:
-        // initial mpi env for application.
+        // Initialize mpi env for application.
         bool create(int argc,char *argv[]);
 
         // start app

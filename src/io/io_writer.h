@@ -29,7 +29,7 @@ namespace kiwi {
     public:
 
         /**
-         * initial variable pDumpFile, and set MPI_IO file view.
+         * Initialize variable pDumpFile, and set MPI_IO file view.
          */
         IOWriter(const std::string &filename);
 
