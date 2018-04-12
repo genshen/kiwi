@@ -18,6 +18,18 @@ namespace kiwi {
         // long id;
 
         /**
+         * onAttach is called after the runner is registered to message lopper.
+         */
+        virtual void onAttach() = 0;
+
+        /**
+         * In each message loop, if shouldDetach returns true, this runner will be detached immediately.
+         * onDetach will be called after this runner is detached.
+         * Detach means the runner is removed from message looper (messages will not be received), and this runner object will be destroyed.
+         */
+        virtual void onDetach() = 0;
+
+        /**
          * Checkout whether this runner should be detached form message loop.
          * This method will be called before each message loop.
          * If this method return true(the runner should be detached,),

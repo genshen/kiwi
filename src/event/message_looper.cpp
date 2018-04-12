@@ -46,12 +46,14 @@ bool kiwi::MessageLooper::shouldExistLoop() {
 
 void kiwi::MessageLooper::registerRunner(MessageRunner *runner) {
     _runners.push_back(runner); // just add it to the list _runners.
+    runner->onAttach();
 }
 
 void kiwi::MessageLooper::unRegisterRunner(MessageRunner *mr) {
     for (auto iter = _runners.begin(); iter != _runners.end();) {
         MessageRunner *pItem = *iter;
         if (pItem == mr) {
+            pItem->onDetach(); // call onDetach of this runner before destroying it.
             delete pItem;
             iter = _runners.erase(iter);
         } else {

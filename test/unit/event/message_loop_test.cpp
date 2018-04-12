@@ -6,7 +6,6 @@
 #include "utils/mpi_utils.h"
 #include "event/message_runner.h"
 #include "event/message_looper.h"
-#include "../test_config.h"
 
 #define MESSAGE_LOOP_TEST_TAG 1
 
