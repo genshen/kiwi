@@ -1,10 +1,10 @@
+include(platform_check.cmake) # platform check
 # src directory
 include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
 set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/vendor/pkg/include" "${PROJECT_SOURCE_DIR}/src" CACHE STRING "kiwi_inclue_path")
 
 set(KIWI_HEADER_FILES
         kiwi_app.h
-        library.h
         config/config.h
         event/message_looper.h
         event/message_runner.h
@@ -16,7 +16,6 @@ set(KIWI_HEADER_FILES
 
 set(KIWI_SOURCE_FILES
         kiwi_app.cpp
-        library.cpp
         config/config.cpp
         event/message_looper.cpp
         io/io_utils.hpp

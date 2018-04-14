@@ -57,8 +57,8 @@ namespace kiwi {
     protected:
         MPI_File pFile;
     private:
-        const long blockSize;
         const long headerSize;
+        const long blockSize;
     };
 
 

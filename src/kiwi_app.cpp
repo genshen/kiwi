@@ -3,7 +3,10 @@
 //
 
 #include "kiwi_app.h"
-#include "utils/mpi_utils.h"
+
+void kiwi::kiwiApp::setMPIThreadSupport(short type) {
+    _mpi_thread_type = type;
+}
 
 void kiwi::kiwiApp::run(int argc, char *argv[]) {
     // app's lifecycle here.
@@ -29,12 +32,12 @@ bool kiwi::kiwiApp::beforeCreate(int argc, char *argv[]) {
 }
 
 bool kiwi::kiwiApp::create(int argc, char *argv[]) {
-    mpiUtils::initialMPI(argc, argv);
+    if (_mpi_thread_type == MPI_THREAD_SINGLE) {
+        mpiUtils::initialMPI(argc, argv);
+    } else {
+        mpiUtils::initMPIWithThread(argc, argv, _mpi_thread_type);
+    }
     return true;
-}
-
-void kiwi::kiwiApp::onCreate() {
-
 }
 
 bool kiwi::kiwiApp::prepare() {
@@ -46,24 +49,8 @@ void kiwi::kiwiApp::start() {
     this->onFinish();
 }
 
-void kiwi::kiwiApp::onStart() {
-
-}
-
-void kiwi::kiwiApp::onFinish() {
-
-}
-
-void kiwi::kiwiApp::beforeDestroy() {
-
-}
-
 void kiwi::kiwiApp::destroy() {
     mpiUtils::finishMPI();
-}
-
-void kiwi::kiwiApp::onDestroy() {
-
 }
 
 void kiwi::kiwiApp::abort(int code) {

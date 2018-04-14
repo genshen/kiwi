@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include "../platform/mpi_support.h"
 #include "../utils/mpi_utils.h"
 #include "message_looper.h"
 
@@ -11,12 +12,24 @@ std::list<kiwi::MessageRunner *> kiwi::MessageLooper::_runners; // define of _ru
 void kiwi::MessageLooper::start() {
     while (!shouldExistLoop()) {
         MPI_Status status;
+        // checkout income message but not receive it.
+#ifdef FUNC_MPI_MPROBE_SUPPORTED
+        MPI_Message msg;
+        MPI_Mprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &msg, &status);
+#else
         // Probe for an incoming message from any process with and tag.
         MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD,
                   &status); // probe but not receive. Get blocked if there is no message.
-        for (MessageRunner *runner : _runners) { // check each runners's filter, dispatch message to one runner.
+#endif
+
+        // check each runners's filter, dispatch message to one runner.
+        for (MessageRunner *runner : _runners) {
             if (runner->filter(&status)) {
+#ifdef FUNC_MPI_MPROBE_SUPPORTED
+                runner->onMessage(&status, &msg);
+#else
                 runner->onMessage(&status);
+#endif
                 break;
             }
         }

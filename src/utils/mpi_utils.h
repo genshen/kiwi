@@ -11,15 +11,29 @@
 namespace kiwi {
 #define MASTER_PROCESSOR 0
 
-    namespace mpiUtils {
+    class mpiUtils {
+    public:
         // you can use ownRank and allRanks after called function initialMPI in tiny_fmm.h
-        extern RID ownRank;
-        extern RID allRanks;
+        static RID ownRank;
+        static RID allRanks;
 
-        void initialMPI(int argc, char *argv[]);
+        /**
+         * initialize mpi
+         */
+        static void initialMPI(int argc, char *argv[]);
 
-        void finishMPI();
+        /**
+         * initialize mpi environments with multiple thread support.
+         */
+        static void initMPIWithThread(int argc, char *argv[], short type);
 
+        static void finishMPI();
+
+    private:
+        /**
+         * initialize mpi variable @var ownRank and allRanks.
+         */
+        static void initMPIRank();
     };
 }
 #endif // KIWI_MPI_UTILS_H
