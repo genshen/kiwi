@@ -70,6 +70,7 @@ namespace kiwi {
          */
         virtual void onMessage(MPI_Status *pStatus, MPI_Message *pMessage) {};
 
+        virtual ~MessageRunner() = default;
     };
 }
 #endif //KIWI_MESSAGE_RUNNER_H
