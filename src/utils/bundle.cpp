@@ -8,7 +8,7 @@
 kiwi::Bundle::Bundle() {
 }
 
-kiwi::Bundle::Bundle(const unsigned int cap){
+kiwi::Bundle::Bundle(const unsigned int cap) {
     newPackBuffer(cap);
 }
 
@@ -46,9 +46,9 @@ void kiwi::Bundle::get(MPI_Comm comm, int &cursor, std::string &t) {
     long strlen;
     MPI_Unpack(buffer, cap, &cursor, &strlen, 1, MPI_LONG, comm); //unpack string length first.
     if (strlen > 0) {
-        char *b = new char[strlen]; // todo '\0'
+        char *b = new char[strlen + 1];
         MPI_Unpack(buffer, cap, &cursor, b, strlen, MPI_BYTE, comm);
-//        b[strlen] = '\0';
+        b[strlen] = '\0';
         t = std::string(b);
         delete[]b;
     }
