@@ -8,6 +8,7 @@ configure_file(
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
+include_directories(${PROJECT_SOURCE_DIR}/vendor/src/fmt)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(KIWI_TEST_HEADER_FILES
@@ -24,7 +25,7 @@ set(KIWI_TEST_SOURCE_FILES
         io/io_writer_test.cpp
         utils/bundle_test.cpp
         utils/mpi_utils_test.cpp
-        )
+        logs/logs_test.cpp)
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

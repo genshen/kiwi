@@ -1,7 +1,17 @@
 include(platform_check.cmake) # platform check
 # src directory
 include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
-set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/vendor/pkg/include" "${PROJECT_SOURCE_DIR}/src" CACHE STRING "kiwi_inclue_path")
+# add fmt lib.
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/fmt ${PROJECT_BINARY_DIR}/vendor/fmt)
+include_directories(${PROJECT_SOURCE_DIR}/vendor/src/fmt)
+# todo lib name cached.
+
+set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH}
+        "${PROJECT_SOURCE_DIR}/vendor/pkg/include"
+        "${PROJECT_SOURCE_DIR}/vendor/src/fmt"
+        "${PROJECT_SOURCE_DIR}/src"
+        CACHE STRING "kiwi_inclue_path")
+
 
 set(KIWI_HEADER_FILES
         kiwi_app.h
@@ -22,15 +32,20 @@ set(KIWI_SOURCE_FILES
         io/io_writer.cpp
         utils/bundle.cpp
         utils/mpi_utils.cpp
-        )
+        logs/logs.hpp)
 
-# todo bin lib, install
+
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 add_library(${KIWI_LIB_NAME} ${KIWI_SOURCE_FILES} ${KIWI_HEADER_FILES})
 
+#### set export libs
+set(KIWI_EXPORT_LINK_LIBS ${KIWI_EXPORT_LINK_LIBS}
+        "fmt::fmt-header-only"
+        "${KIWI_LIB_NAME}"
+        CACHE STRING "kiwi_inclue_path")
 
 ##########################
 ##### install files

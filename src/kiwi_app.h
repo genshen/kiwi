@@ -2,8 +2,8 @@
 // Created by genshen(genshenchu@gmail.com) on 2018-03-21.
 //
 
-#ifndef KIWI_KIWI_H
-#define KIWI_KIWI_H
+#ifndef KIWI_KIWI_APP_H
+#define KIWI_KIWI_APP_H
 
 #include "utils/mpi_utils.h"
 
@@ -72,4 +72,4 @@ namespace kiwi {
     };
 }
 
-#endif //KIWI_KIWI_H
+#endif //KIWI_KIWI_APP_H
