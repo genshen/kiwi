@@ -3,7 +3,7 @@ include(platform_check.cmake) # platform check
 include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
 # add fmt lib.
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/fmt ${PROJECT_BINARY_DIR}/vendor/fmt)
-include_directories(${PROJECT_SOURCE_DIR}/vendor/src/fmt)
+include_directories(${PROJECT_SOURCE_DIR}/vendor/src/fmt)  # todo append include in master branch.
 # todo lib name cached.
 
 set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH}
@@ -19,6 +19,8 @@ set(KIWI_HEADER_FILES
         event/message_looper.h
         event/message_runner.h
         io/io_writer.h
+        logs/colors.h
+        logs/logs.h
         utils/data_def.h
         utils/bundle.h
         utils/mpi_utils.h
@@ -30,9 +32,10 @@ set(KIWI_SOURCE_FILES
         event/message_looper.cpp
         io/io_utils.hpp
         io/io_writer.cpp
+        logs/logs.cpp
         utils/bundle.cpp
         utils/mpi_utils.cpp
-        logs/logs.hpp)
+        )
 
 
 # set binary path and lib storage path for compiling process.

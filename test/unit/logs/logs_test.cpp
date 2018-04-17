@@ -3,10 +3,13 @@
 //
 
 #include <gtest/gtest.h>
-#include "logs/logs.hpp"
+#include "logs/logs.h"
 
 TEST(logs_print_test, logs_test) {
-//    DEBUG("hi");
-//    LogE("tag", "hello%d..", 10);
-    kiwi::log::i("tag", "%s-%d", "hee", 100);
+    kiwi::logs::s("tag", "{0}s-{1}\n", "hee", 100);
+    kiwi::logs::v("tag", "{0}s-{1}\n", "hee", 100);
+    kiwi::logs::i("tag", "{0}s-{1}\n", "hee", 100);
+    kiwi::logs::w("tag", "{0}s-{1}\n", "hee", 100);
+    kiwi::logs::e("tag", "{0}s-{1}\n", "hee", 100);
+    kiwi::logs::d("tag", "{0}s-{1}\n", "hee", 100);
 }
