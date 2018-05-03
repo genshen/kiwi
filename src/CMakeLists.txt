@@ -46,9 +46,9 @@ add_library(${KIWI_LIB_NAME} ${KIWI_SOURCE_FILES} ${KIWI_HEADER_FILES})
 
 #### set export libs
 set(KIWI_EXPORT_LINK_LIBS ${KIWI_EXPORT_LINK_LIBS}
-        "fmt::fmt-header-only"
+        "fmt"
         "${KIWI_LIB_NAME}"
-        CACHE STRING "kiwi_inclue_path")
+        CACHE STRING "kiwi_libs_path")
 
 ##########################
 ##### install files

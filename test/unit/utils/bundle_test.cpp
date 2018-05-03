@@ -9,7 +9,7 @@
 TEST(bundle_test_1, bundle_test) {
     kiwi::Bundle bundle = kiwi::Bundle();
     bundle.newPackBuffer(1024);
-    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) { // pack data.
+    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) { // pack data.
         bundle.put(MPI_COMM_WORLD, 1024);
         std::string s = "hello";
         bundle.put(MPI_COMM_WORLD, s);
@@ -19,7 +19,7 @@ TEST(bundle_test_1, bundle_test) {
     MPI_Bcast(bundle.getPackedData(), bundle.getPackedDataCap(),
               MPI_BYTE, MASTER_PROCESSOR, MPI_COMM_WORLD); // synchronize config information
 
-    if (kiwi::mpiUtils::ownRank != MASTER_PROCESSOR) { // unpack data.
+    if (kiwi::mpiUtils::own_rank != MASTER_PROCESSOR) { // unpack data.
         int i, cursor = 0;
         char ch;
         std::string hello;

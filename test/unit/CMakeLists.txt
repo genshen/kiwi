@@ -23,7 +23,8 @@ set(KIWI_TEST_SOURCE_FILES
         io/io_writer_test.cpp
         utils/bundle_test.cpp
         utils/mpi_utils_test.cpp
-        logs/logs_test.cpp)
+        logs/logs_test.cpp
+        )
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

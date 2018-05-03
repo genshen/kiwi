@@ -9,8 +9,9 @@
 using namespace std;
 
 namespace kiwi {
-    RID mpiUtils::ownRank;
-    RID mpiUtils::allRanks;
+    RID mpiUtils::own_rank;
+    RID mpiUtils::all_ranks;
+    MPI_Comm mpiUtils::global_comm;
 
     void mpiUtils::initialMPI(int argc, char *argv[]) {
         MPI_Init(&argc, &argv);
@@ -28,17 +29,24 @@ namespace kiwi {
     }
 
     void mpiUtils::initMPIRank() {
-        MPI_Comm_size(MPI_COMM_WORLD, &allRanks);
-        MPI_Comm_rank(MPI_COMM_WORLD, &ownRank);
+        global_comm = MPI_COMM_WORLD;
+        MPI_Comm_size(MPI_COMM_WORLD, &all_ranks);
+        MPI_Comm_rank(MPI_COMM_WORLD, &own_rank);
 
 #ifdef DEV_MODE
-        if (ownRank == MASTER_PROCESSOR) {
-            cout << "[DEV] running with " << allRanks << " processors" << endl;
+        if (own_rank == MASTER_PROCESSOR) {
+            cout << "[DEV] running with " << all_ranks << " processors" << endl;
         }
 #endif
     }
 
     void mpiUtils::finishMPI() {
         MPI_Finalize();
+    }
+
+    void mpiUtils::onGlobalCommChanged(MPI_Comm comm) {
+        global_comm = comm;
+        MPI_Comm_rank(comm, &own_rank); // get new rank in comm _comm.
+        MPI_Comm_rank(comm, &all_ranks);
     }
 }

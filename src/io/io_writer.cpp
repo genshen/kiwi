@@ -24,12 +24,12 @@ kiwi::IOWriter::IOWriter(const std::string &filename, long headerSize, long bloc
 
     etype = MPI_BYTE;
     lb = 0; // DEFAULT_IO_BLOCK_SIZE * mpiUtils::ownRank;
-    extent = blockSize * mpiUtils::allRanks;
+    extent = blockSize * mpiUtils::all_ranks;
 
     MPI_Type_contiguous(blockSize, MPI_BYTE, &contig);
     MPI_Type_create_resized(contig, lb, extent, &filetype);
     MPI_Type_commit(&filetype);
-    MPI_File_set_view(pFile, headerSize + blockSize * mpiUtils::ownRank,
+    MPI_File_set_view(pFile, headerSize + blockSize * mpiUtils::own_rank,
                       etype, filetype, "native", MPI_INFO_NULL);
 }
 

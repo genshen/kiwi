@@ -32,14 +32,14 @@ namespace kiwi {
     void config::sync() {
         Bundle bundle = Bundle();
         bundle.newPackBuffer(1024);
-        if (mpiUtils::ownRank == MASTER_PROCESSOR) { // pack data.
+        if (mpiUtils::own_rank == MASTER_PROCESSOR) { // pack data.
             putConfigData(bundle);
         }
 
         MPI_Bcast(bundle.getPackedData(), bundle.getPackedDataCap(),
                   MPI_BYTE, MASTER_PROCESSOR, MPI_COMM_WORLD); // synchronize config information
 
-        if (mpiUtils::ownRank != MASTER_PROCESSOR) { // unpack data.
+        if (mpiUtils::own_rank != MASTER_PROCESSOR) { // unpack data.
             getConfigData(bundle);
         }
         bundle.releasePackBuffer(); // release memory after usage.

@@ -13,9 +13,10 @@ namespace kiwi {
 
     class mpiUtils {
     public:
-        // you can use ownRank and allRanks after called function initialMPI in tiny_fmm.h
-        static RID ownRank;
-        static RID allRanks;
+        // you can use own_rank and all_ranks after called function initialMPI in tiny_fmm.h
+        static RID own_rank;
+        static RID all_ranks;
+        static MPI_Comm global_comm;
 
         /**
          * initialize mpi
@@ -28,6 +29,8 @@ namespace kiwi {
         static void initMPIWithThread(int argc, char *argv[], short type);
 
         static void finishMPI();
+
+        static void onGlobalCommChanged(MPI_Comm comm);
 
     private:
         /**
