@@ -46,7 +46,7 @@ namespace kiwi {
 
     void mpiUtils::onGlobalCommChanged(MPI_Comm comm) {
         global_comm = comm;
+        MPI_Comm_size(comm, &all_ranks);
         MPI_Comm_rank(comm, &own_rank); // get new rank in comm _comm.
-        MPI_Comm_rank(comm, &all_ranks);
     }
 }

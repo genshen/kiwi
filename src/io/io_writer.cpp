@@ -11,7 +11,7 @@ kiwi::IOWriter::IOWriter(const std::string &filename) :
 
 kiwi::IOWriter::IOWriter(const std::string &filename, long headerSize, long blockSize) :
         headerSize(headerSize), blockSize(blockSize) {
-    int status = MPI_File_open(MPI_COMM_WORLD, filename.c_str(),
+    int status = MPI_File_open(mpiUtils::global_comm, filename.c_str(), // todo comm.
                                MPI_MODE_CREATE | MPI_MODE_WRONLY,
                                MPI_INFO_NULL, &pFile);
     if (status == -1) { // todo no output.

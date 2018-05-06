@@ -18,7 +18,14 @@ namespace kiwi {
      */
     class config {
     public:
-        bool hasError = false;
+        /**
+         * Error flag while resolving toml config file.
+         */
+        bool hasError;
+
+        /**
+         * The error message while resolving config.
+         */
         std::string errorMessage;
 
         // make a new instance without resolving config file.
