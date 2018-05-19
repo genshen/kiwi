@@ -44,28 +44,51 @@ namespace kiwi {
         // returns capacity of buffer.
         unsigned int getPackedDataCap();
 
-        // pack T into packBuffer. notice: if T is the type like sts::string, it is not allowed to be packed (may cause segment fault).
+        // pack T( usually T is simple data, e.g. int, double, struct) into packBuffer using MPI_Pack.
+        // notice: if T is the type like sts::string, it is not allowed to be packed (may cause segment fault).
         // make sure buffer is not null before calling this function.
         template<typename T>
-        void put(MPI_Comm comm, const T &data);
+        void pack(MPI_Comm comm, const T &data);
+
+        // append an array (1d array) into buffer using MPI_Pack.
+        template<typename T>
+        void pack(MPI_Comm comm, int size, const T *data);
+
+        // pack string into buffer using MPI_Pack.
+        void pack(MPI_Comm comm, const std::string &str); // todo safe pack with cap.
+
+        // recover data from buffer using MPI_Unpack.
+        template<typename T>
+        void unpack(MPI_Comm comm, int &cursor, T &data);
+
+        // recover an array (1d array) from buffer using MPI_Unpack.
+        template<typename T>
+        void unpack(MPI_Comm comm, int &cursor, int size, T *data);
+
+        // recover string from buffer using MPI_Unpack.
+        void unpack(MPI_Comm comm, int &cursor, std::string &str);
+
+        // append data into buffer.
+        template<typename T>
+        void put(const T &data);
 
         // append an array (1d array) into buffer.
         template<typename T>
-        void put(MPI_Comm comm, int size, const T *data);
+        void put(int size, const T *data); // todo size in long type.
 
-        // make sure buffer is not null before calling this methods.
-        void put(MPI_Comm comm, const std::string &t); // todo safe put with cap.
+        // pack simple data(e.g. int, double) into buffer.
+        void put(const std::string &str); // todo safe pack with cap.
 
         // recover data from buffer.
         template<typename T>
-        void get(MPI_Comm comm, int &cursor, T &data);
+        void get(int &cursor, T &data);
 
         // recover an array (1d array) from buffer.
         template<typename T>
-        void get(MPI_Comm comm, int &cursor, int size, T data[]);
+        void get(int &cursor, int size, T *data);
 
         // recover string from buffer.
-        void get(MPI_Comm comm, int &cursor, std::string &t);
+        void get(int &cursor, std::string &str);
 
     private:
         unsigned int cap; // capacity of buffer.
@@ -77,23 +100,51 @@ namespace kiwi {
 // methods implementation.
 // Templated code implementation should never be in a .cpp file.
 template<typename T>
-void kiwi::Bundle::put(MPI_Comm comm, const T &data) {
+void kiwi::Bundle::pack(MPI_Comm comm, const T &data) {
     MPI_Pack(&data, sizeof(T), MPI_BYTE, buffer, cap, &length, comm);
 }
 
 template<typename T>
-void kiwi::Bundle::put(MPI_Comm comm, int size, const T *data) {
+void kiwi::Bundle::pack(MPI_Comm comm, int size, const T *data) {
     MPI_Pack(data, size * sizeof(T), MPI_BYTE, buffer, cap, &length, comm);
 }
 
 template<typename T>
-void kiwi::Bundle::get(MPI_Comm comm, int &cursor, T &data) {
+void kiwi::Bundle::put(const T &data) {
+    T *buf = (T *) (buffer + length);
+    buf[0] = data; // copy data
+    length += sizeof(T); // add offset.
+}
+
+template<typename T>
+void kiwi::Bundle::put(int size, const T *data) {
+    auto *buf = (T *) (buffer + length);
+    std::copy(data, data + size, buf); // copy data
+    length += size * sizeof(T); // add offset.
+}
+
+template<typename T>
+void kiwi::Bundle::unpack(MPI_Comm comm, int &cursor, T &data) {
     MPI_Unpack(buffer, cap, &cursor, &data, sizeof(T), MPI_BYTE, comm);
 }
 
 template<typename T>
-void kiwi::Bundle::get(MPI_Comm comm, int &cursor, int size, T *data) {
+void kiwi::Bundle::unpack(MPI_Comm comm, int &cursor, int size, T *data) {
     MPI_Unpack(buffer, cap, &cursor, data, size * sizeof(T), MPI_BYTE, comm);
+}
+
+template<typename T>
+void kiwi::Bundle::get(int &cursor, T &data) {
+    T *position = (T *) (buffer + cursor);
+    data = position[0];
+    cursor += sizeof(T);
+}
+
+template<typename T>
+void kiwi::Bundle::get(int &cursor, int size, T *data) {
+    T *position = (T *) (buffer + cursor);
+    std::copy(position, position + size, data);
+    cursor += size * sizeof(T);
 }
 
 #endif //KIWI_DATA_PACK_H
