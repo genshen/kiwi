@@ -25,7 +25,7 @@
     },
     "files": {
       "catch2": {
-        "path": "https://github.com/catchorg/Catch2/releases/download/v2.1.2",
+        "path": "https://raw.githubusercontent.com/CatchOrg/Catch2/v2.2.2/single_include",
         "files": {
           "catch.hpp": "catch2.hpp"
         },
