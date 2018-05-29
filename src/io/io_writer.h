@@ -33,12 +33,18 @@ namespace kiwi {
          */
         IOWriter(const std::string &filename);
 
-        IOWriter(const std::string &filename, long headerSize, long blockSize);
+        IOWriter(const std::string &filename, size_t header_size, size_t block_size);
 
         /**
          * close file, release unnecessary variable.
          */
         ~IOWriter();
+
+        /**
+        * create file with configured file name, header size, etc.
+        * @return true for success, false for creating failed.
+        */
+        virtual bool make();
 
         /**
           *  write data indicated by b to file pDumpFile.
@@ -48,29 +54,37 @@ namespace kiwi {
           * @return size that has been writen.
           */// start from 0.
         template<typename T>
-        long write(T *b, long start, long size);
+        size_t write(T *b, size_t start, size_t size);
 
         // write from index 0 of array b.
         template<typename T>
-        long write(T *b, long size);
+        size_t write(T *b, size_t size);
+
+        /**
+         * get pointer of MPI FILE.
+         * @return MPI_File
+         */
+        inline MPI_File getMPIFile() {
+            return pFile;
+        }
 
     protected:
         MPI_File pFile;
-    private:
-        const long headerSize;
-        const long blockSize;
+        const size_t _header_size;
+        const size_t _block_size;
+        const std::string _filename;
     };
 
 
 // methods implements.
     template<typename T>
-    long IOWriter::write(T *b, long start, long size) { // todo size type (unsigned long)
+    size_t IOWriter::write(T *b, size_t start, size_t size) {
         MPI_File_write(pFile, b + start, size * sizeof(T), MPI_BYTE, MPI_STATUS_IGNORE);
         return size;
     }
 
     template<typename T>
-    long IOWriter::write(T *b, long size) {
+    size_t IOWriter::write(T *b, size_t size) {
         MPI_File_write(pFile, b, size * sizeof(T), MPI_BYTE, MPI_STATUS_IGNORE);
         return size;
     }

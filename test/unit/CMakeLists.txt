@@ -24,6 +24,7 @@ set(KIWI_TEST_SOURCE_FILES
         utils/bundle_test.cpp
         utils/mpi_utils_test.cpp
         logs/logs_test.cpp
+        io/local_storage_test.cpp
         )
 
 # set binary path and lib storage path wile compiling process.

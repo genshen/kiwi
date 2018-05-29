@@ -18,6 +18,7 @@ set(KIWI_HEADER_FILES
         config/config.h
         event/message_looper.h
         event/message_runner.h
+        io/local_storage.h
         io/io_writer.h
         logs/colors.h
         logs/logs.h
@@ -30,6 +31,7 @@ set(KIWI_SOURCE_FILES
         kiwi_app.cpp
         config/config.cpp
         event/message_looper.cpp
+        io/local_storage.cpp
         io/io_utils.hpp
         io/io_writer.cpp
         logs/logs.cpp

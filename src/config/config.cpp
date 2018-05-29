@@ -42,7 +42,7 @@ namespace kiwi {
         if (mpiUtils::own_rank != MASTER_PROCESSOR) { // unpack data.
             getConfigData(bundle);
         }
-        bundle.releasePackBuffer(); // release memory after usage.
+        bundle.freePackBuffer(); // release memory after usage.
     }
 
 }

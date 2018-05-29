@@ -13,7 +13,7 @@ kiwi::Bundle::Bundle(const unsigned int cap) {
 }
 
 kiwi::Bundle::~Bundle() {
-    releasePackBuffer(); // make sure memory cleaned.
+    freePackBuffer(); // make sure memory cleaned.
 }
 
 void kiwi::Bundle::newPackBuffer(const unsigned int cap) {
@@ -24,7 +24,7 @@ void kiwi::Bundle::newPackBuffer(const unsigned int cap) {
     }
 }
 
-void kiwi::Bundle::releasePackBuffer() {
+void kiwi::Bundle::freePackBuffer() {
     if (buffer != nullptr) {
         delete buffer;
         buffer = nullptr;

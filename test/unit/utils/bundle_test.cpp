@@ -30,7 +30,7 @@ TEST(bundle_test_pack, bundle_test) {
         EXPECT_EQ(hello, "hello");
         EXPECT_EQ(ch, 'c');
     }
-    bundle.releasePackBuffer();
+    bundle.freePackBuffer();
 }
 
 TEST(bundle_test_put, bundle_test) {
@@ -57,7 +57,7 @@ TEST(bundle_test_put, bundle_test) {
         EXPECT_EQ(hello, "hello");
         EXPECT_EQ(ch, 'c');
     }
-    bundle.releasePackBuffer();
+    bundle.freePackBuffer();
 }
 
 TEST(bundle_test_mixed, bundle_test) {
@@ -84,5 +84,5 @@ TEST(bundle_test_mixed, bundle_test) {
         EXPECT_EQ(hello, "hello");
         EXPECT_EQ(ch, 'c');
     }
-    bundle.releasePackBuffer();
+    bundle.freePackBuffer();
 }

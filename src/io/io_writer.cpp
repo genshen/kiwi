@@ -9,14 +9,22 @@ kiwi::IOWriter::IOWriter(const std::string &filename) :
         IOWriter(filename, DEFAULT_IO_HEADER_SIZE, DEFAULT_IO_BLOCK_SIZE) {
 }
 
-kiwi::IOWriter::IOWriter(const std::string &filename, long headerSize, long blockSize) :
-        headerSize(headerSize), blockSize(blockSize) {
-    int status = MPI_File_open(mpiUtils::global_comm, filename.c_str(), // todo comm.
+kiwi::IOWriter::IOWriter(const std::string &filename, size_t header_size, size_t block_size) :
+        _filename(filename), _header_size(header_size), _block_size(block_size) {}
+
+kiwi::IOWriter::~IOWriter() {
+    if (pFile != nullptr) {
+        MPI_File_close(&pFile);
+        pFile = nullptr;
+    }
+}
+
+bool kiwi::IOWriter::make() {
+    int status = MPI_File_open(mpiUtils::global_comm, _filename.c_str(), // todo comm.
                                MPI_MODE_CREATE | MPI_MODE_WRONLY,
                                MPI_INFO_NULL, &pFile);
-    if (status == -1) { // todo no output.
-        std::cout << "ERROR, open file " << filename << " failed" << std::endl;
-        exit(1);
+    if (status == -1) {
+        return false;
     }
 
     MPI_Aint lb, extent;
@@ -24,18 +32,12 @@ kiwi::IOWriter::IOWriter(const std::string &filename, long headerSize, long bloc
 
     etype = MPI_BYTE;
     lb = 0; // DEFAULT_IO_BLOCK_SIZE * mpiUtils::ownRank;
-    extent = blockSize * mpiUtils::all_ranks;
+    extent = _block_size * mpiUtils::all_ranks;
 
-    MPI_Type_contiguous(blockSize, MPI_BYTE, &contig);
+    MPI_Type_contiguous(_block_size, MPI_BYTE, &contig);
     MPI_Type_create_resized(contig, lb, extent, &filetype);
     MPI_Type_commit(&filetype);
-    MPI_File_set_view(pFile, headerSize + blockSize * mpiUtils::own_rank,
+    MPI_File_set_view(pFile, _header_size + _block_size * mpiUtils::own_rank,
                       etype, filetype, "native", MPI_INFO_NULL);
-}
-
-kiwi::IOWriter::~IOWriter() {
-    if (pFile != nullptr) {
-        MPI_File_close(&pFile);
-        pFile = nullptr;
-    }
+    return true;
 }

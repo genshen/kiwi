@@ -31,13 +31,13 @@ namespace kiwi {
         // if need to pack data, do call newPackBuffer(cap) before packing.
         Bundle();
 
-        ~Bundle(); // release buffer here (you can also release buffer by calling releasePackBuffer().
+        ~Bundle(); // release buffer here (you can also release buffer by calling freePackBuffer().
 
         // Initialize pack buffer, cap is the capacity of packBuffer.
         void newPackBuffer(const unsigned int cap);
 
         // clean pack buffer after we won't use the buffer any more.
-        void releasePackBuffer();
+        void freePackBuffer();
 
         byte *getPackedData();
 
