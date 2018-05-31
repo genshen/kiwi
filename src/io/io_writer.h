@@ -2,8 +2,8 @@
 // Created by genshen(genshenchu@gmail.com) on 2018-3-13.
 //
 
-#ifndef KIWI_SYS_DUMP_H
-#define KIWI_SYS_DUMP_H
+#ifndef KIWI_IO_WRITER_H
+#define KIWI_IO_WRITER_H
 
 #include <string>
 #include "../utils/mpi_utils.h"
@@ -29,22 +29,21 @@ namespace kiwi {
     public:
 
         /**
-         * Initialize variable pDumpFile, and set MPI_IO file view.
+         * Initialize variable pFile.
          */
-        IOWriter(const std::string &filename);
-
-        IOWriter(const std::string &filename, size_t header_size, size_t block_size);
+        IOWriter(MPI_File pFile);
 
         /**
-         * close file, release unnecessary variable.
-         */
-        ~IOWriter();
-
-        /**
-        * create file with configured file name, header size, etc.
+        * create file view with configured file pointer, data type, header size, etc.
         * @return true for success, false for creating failed.
         */
-        virtual bool make();
+        virtual bool make(size_t _skip_size, size_t _block_size, MPI_Datatype etype);
+
+        /**
+         *
+         * make using default values.
+         */
+        virtual bool make(MPI_Datatype etype);
 
         /**
           *  write data indicated by b to file pDumpFile.
@@ -70,8 +69,9 @@ namespace kiwi {
 
     protected:
         MPI_File pFile;
-        const size_t _header_size;
-        const size_t _block_size;
+        MPI_Datatype _etype;
+//        const size_t _header_size;
+//        const size_t _block_size;
         const std::string _filename;
     };
 
@@ -79,15 +79,15 @@ namespace kiwi {
 // methods implements.
     template<typename T>
     size_t IOWriter::write(T *b, size_t start, size_t size) {
-        MPI_File_write(pFile, b + start, size * sizeof(T), MPI_BYTE, MPI_STATUS_IGNORE);
+        MPI_File_write_all(pFile, b + start, size, _etype, MPI_STATUS_IGNORE);
         return size;
     }
 
     template<typename T>
     size_t IOWriter::write(T *b, size_t size) {
-        MPI_File_write(pFile, b, size * sizeof(T), MPI_BYTE, MPI_STATUS_IGNORE);
+        MPI_File_write_all(pFile, b, size, _etype, MPI_STATUS_IGNORE);
         return size;
     }
 }
 
-#endif //KIWI_SYS_DUMP_H
+#endif //KIWI_IO_WRITER_H

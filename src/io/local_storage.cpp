@@ -4,32 +4,24 @@
 
 #include "local_storage.h"
 
-kiwi::LocalStorage::LocalStorage(const std::string &filename)
-        : _local_header_size(DEFAULT_LOCAL_STORAGE_SIZE), IOWriter(filename) {}
-
-kiwi::LocalStorage::LocalStorage(size_t global_header_size, size_t local_header_size, size_t block_size,
-                                 const std::string &filename)
-        : _local_header_size(local_header_size), IOWriter(filename, global_header_size, block_size) {
-
-//    _writer->getMPIFile();
+kiwi::LocalStorage::LocalStorage(MPI_File pFile) :
+        LocalStorage(pFile, DEFAULT_IO_HEADER_SIZE, DEFAULT_LOCAL_STORAGE_SIZE, DEFAULT_IO_BLOCK_SIZE) {
 }
 
-kiwi::LocalStorage::~LocalStorage() { // todo call ~IOWriter()
-}
+kiwi::LocalStorage::LocalStorage(MPI_File pFile, size_t global_header_size,
+                                 size_t local_header_size, size_t block_size)
+        : _global_header_size(global_header_size), _local_header_size(local_header_size),
+          _block_size(block_size), writer(pFile) {}
 
-bool kiwi::LocalStorage::make() {
-    if (!IOWriter::make()) {
+bool kiwi::LocalStorage::make(MPI_Datatype type) {
+    if (!writer.make(_global_header_size + _local_header_size * kiwi::mpiUtils::all_ranks,
+                     _block_size, type)) {
         return false;
     }
-    MPI_File_seek(pFile, _local_header_size, MPI_SEEK_SET); // todo type long and MPI_Offset
 }
 
 void kiwi::LocalStorage::writeHeader(kiwi::byte *data, size_t size) {
-    MPI_Offset current_offset;
-    MPI_File_get_position(pFile, &current_offset);
-    size = size > _local_header_size ? _local_header_size : size; // cut off size.
-
-    MPI_File_seek(pFile, 0, MPI_SEEK_SET);
-    write(data, size);
-    MPI_File_seek(pFile, current_offset, MPI_SEEK_SET);
+    writer.make(_global_header_size, _local_header_size, MPI_BYTE);
+    writer.write(data, size);
 }
+

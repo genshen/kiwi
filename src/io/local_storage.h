@@ -12,30 +12,40 @@
 
 #define DEFAULT_LOCAL_STORAGE_SIZE 1024
 namespace kiwi {
-    class LocalStorage : public IOWriter {
+    class LocalStorage {
     public:
+
+        IOWriter writer;
+
+        /**
+         * initialize using default header size and local header size.
+         * @param pFile pointer of MPI file.
+         */
+        LocalStorage(MPI_File pFile);
+
         /**
          * config local storage with default values.
+         * @param pFile pointer of MPI file.
          */
-        LocalStorage(const std::string &filename);
+        LocalStorage(MPI_File pFile, size_t global_header_size,
+                     size_t local_header_size, size_t block_size);
 
         /**
          * config local storage whit user specified values.
-         * @param global_header_size header size used to initialize IOWriter
-         * @param local_header_size the header size for each MPI rank.
+         * this method should be called once.
+         * @param global_header_size header size used to initialize IOWriter in bytes
+         * @param local_header_size the header size for each MPI rank in bytes.
          * @param block_size block size used to initialize IOWriter.
+         * @param type basic data type(element type).
          */
-        LocalStorage(size_t global_header_size, size_t local_header_size, size_t block_size,
-                     const std::string &filename);
-
-        ~LocalStorage();
-
-        bool make();
+        bool make(MPI_Datatype type);
 
         void writeHeader(byte *data, size_t size);
 
     private:
+        size_t _global_header_size;
         size_t _local_header_size;
+        size_t _block_size;
     };
 
 }
