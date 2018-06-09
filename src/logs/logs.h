@@ -7,20 +7,50 @@
 
 #include <sstream>
 #include <fmt/format.h>
+#include <fstream>
 #include "colors.h"
 #include "../utils/mpi_utils.h"
 
-#define LOG_FORMAT "{0} P{1}:{2}:"
 namespace kiwi {
-    class logs {
-    public:
-        static bool async;
-        static bool detail;
-        static bool colorful;
 
-        static void setFormat(std::string) {}
+
+    class logs {
+        struct LogOptions {
+            bool async;
+            bool detail;
+            bool colorful;
+            bool log_file;
+            std::string log_format;
+        };
+
+    public:
+
+        /**
+         * set output format for logs.
+         */
+        static void setFormat(const std::string &format);
+
+        /**
+         * set whether the log is colorful when outputting to console or terminal.
+         * (there is no color if it output into file no matter what the value of variable colorful is.)
+         * @param with_color true for colorful when outputting to console/terminal.
+         */
+        static void setCorlorFul(bool with_color);
 
         // todo format, buffer.
+        /**
+         * write log into file instant of console or terminal.
+         * and open file for writing.
+         * @param filename file name.
+         * @return if fail to open file, false will be returned, otherwise true will be returned.
+         */
+        static bool setLogFile(const std::string &filename);
+
+        /**
+         * this function is called before tha application is end.
+         */
+        static void finalize();
+
         // success
         template<class ... Types>
         inline static void s(const char *tag, const char *format, Types ... args) {
@@ -106,37 +136,48 @@ namespace kiwi {
         }
 
     private:
+        static LogOptions options;
+        static std::ofstream stream;
+
         template<class ... Types>
         static void out_log(const char *level, const char *level_color,
                             const char *tag, const char *format, Types ... args) {
-            std::string out_header = fmt::format(LOG_FORMAT, level, mpiUtils::own_rank, tag);
+            std::string out_header = fmt::format(options.log_format, level, mpiUtils::own_rank, tag);
             std::ostringstream o_string; // todo combine to line 1.
-            if (colorful) {
+            if (options.colorful) {
                 o_string << level_color;
             }
 
             o_string << out_header;
             o_string << fmt::format(format, args...);
 
-            if (colorful) {
+            if (options.colorful) {
                 o_string << COLOR_CLEAR;
             }
-            printf(o_string.str().c_str());
+
+            // write data.
+            if (options.log_file) {
+                stream << o_string.str();
+            } else {
+                printf("%s", o_string.str().c_str());
+            }
         }
     };
 }
 
+/**
+#define LogE(tag, format, ...) { \
+   // kiwi::log.v("[Info]"tag":" format "n", __VA_ARGS__);  \
+  kiwi::log::errorlog(__FILE__, __func__, __LINE__, tag, format, __VA_ARGS__); \
+}
 
-//#define LogE(tag, format, ...) { \
-//  /*   kiwi::log.v("[Info]"tag":" format "n", __VA_ARGS__); */ \
-//  kiwi::log::errorlog(__FILE__, __func__, __LINE__, tag, format, __VA_ARGS__); \
-//}
+#define DEBUG(message) { \
+  if(kiwi::detail){  \
+     printf("%s,%s,%d:%s\n", __FILE__, __func__, __LINE__, message);\
+  }else {   \
+     printf("%s\n", message);\
+  }  \
+}
+*/
 
-//#define DEBUG(message) { \
-//  if(kiwi::detail){  \
-//     printf("%s,%s,%d:%s\n", __FILE__, __func__, __LINE__, message);\
-//  }else {   \
-//     printf("%s\n", message);\
-//  }  \
-//}
 #endif //KIWI_LOGS_H

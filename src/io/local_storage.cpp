@@ -24,4 +24,3 @@ void kiwi::LocalStorage::writeHeader(kiwi::byte *data, size_t size) {
     writer.make(_global_header_size, _local_header_size, MPI_BYTE);
     writer.write(data, size);
 }
-

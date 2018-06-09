@@ -14,7 +14,7 @@
 
 class MPIEnvironment : public ::testing::Environment {
 public:
-    virtual void SetUp() {
+    void SetUp() override {
         char **argv = NULL;
         int argc = 0;
         kiwi::mpiUtils::initialMPI(argc, argv);
@@ -22,13 +22,13 @@ public:
 //        ASSERT_FALSE(mpiError);
     }
 
-    virtual void TearDown() {
+    void TearDown() override {
         kiwi::mpiUtils::finishMPI();
 //        int mpiError = MPI_Finalize();
 //        ASSERT_FALSE(mpiError);
     }
 
-    virtual ~MPIEnvironment() {}
+    ~MPIEnvironment() override = default;
 };
 
 #  endif  // end KIWI_TEST_MPI_ENABLE

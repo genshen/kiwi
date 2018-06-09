@@ -77,6 +77,7 @@ namespace kiwi {
 
 
 // methods implements.
+    // notice: ths params size should match the give element type: @var _etype.
     template<typename T>
     size_t IOWriter::write(T *b, size_t start, size_t size) {
         MPI_File_write_all(pFile, b + start, size, _etype, MPI_STATUS_IGNORE);
