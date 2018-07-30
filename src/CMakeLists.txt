@@ -1,14 +1,14 @@
 include(platform_check.cmake) # platform check
 # src directory
-include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
+include_directories(${KIWI_VENDOR_INCLUDE_PATH})
 # add fmt lib.
-add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/fmt ${PROJECT_BINARY_DIR}/vendor/fmt)
-include_directories(${PROJECT_SOURCE_DIR}/vendor/src/fmt)  # todo append include in master branch.
+add_subdirectory(${KIWI_VENDOR_SRC_PATH}/fmt ${PROJECT_BINARY_DIR}/vendor/fmt)
+include_directories(${KIWI_VENDOR_SRC_PATH}/fmt)  # todo append include in master branch.
 # todo lib name cached.
 
 set(KIWI_EXPORT_INCLUDE_PATH ${KIWI_EXPORT_INCLUDE_PATH}
-        "${PROJECT_SOURCE_DIR}/vendor/pkg/include"
-        "${PROJECT_SOURCE_DIR}/vendor/src/fmt"
+        "${KIWI_VENDOR_INCLUDE_PATH}"
+        "${KIWI_VENDOR_SRC_PATH}/fmt"
         "${PROJECT_SOURCE_DIR}/src"
         CACHE STRING "kiwi_inclue_path")
 

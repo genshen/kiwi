@@ -14,7 +14,7 @@ MESSAGE(STATUS "MPI in test: ${KIWI_TEST_MPI_ENABLE}")
 # Include the gtest library. gtest_SOURCE_DIR is available due to 'project(gtest)' above.
 # an issue for mingw on winodws, see: https://github.com/google/googletest/issues/606#issuecomment-234733757
 if(NOT TARGET gtest)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/googletest/googletest ${PROJECT_BINARY_DIR}/vendor/googletest)
+    add_subdirectory(${KIWI_VENDOR_SRC_PATH}/googletest/googletest ${PROJECT_BINARY_DIR}/vendor/googletest)
 endif()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
