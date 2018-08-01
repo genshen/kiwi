@@ -27,7 +27,11 @@ if (KIWI_MPI_ENABLE)
 endif ()
 #### end MPI
 
+include(pkg.dep.cmake)
+
 add_subdirectory(src)
+# utils for building parallel test.
+add_subdirectory(test/utils)
 
 #if (KIWI_BUILD_DOCS)
 #    add_subdirectory(docs)

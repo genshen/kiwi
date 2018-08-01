@@ -7,7 +7,8 @@ configure_file(
         "${PROJECT_SOURCE_DIR}/test/unit/test_config.h"
 )
 
-include_directories(${KIWI_EXPORT_INCLUDE_PATH})
+include_directories(${KIWI_VENDOR_INCLUDE_PATH})
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(KIWI_TEST_HEADER_FILES
         test_config.h
@@ -34,7 +35,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 add_executable(${KIWI_UINT_TEST_NAME} ${KIWI_TEST_SOURCE_FILES} ${KIWI_TEST_HEADER_FILES})
 
 # Extra linking for the project.
-set(KIWI_EXTRA_LIBS ${KIWI_EXTRA_LIBS} ${KIWI_EXPORT_LINK_LIBS})
+set(KIWI_EXTRA_LIBS ${KIWI_EXTRA_LIBS} kiwi fmt) # todo
 # Extra linking for the project.
 target_link_libraries(${KIWI_UINT_TEST_NAME} ${KIWI_EXTRA_LIBS})
 
