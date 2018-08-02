@@ -14,7 +14,7 @@ namespace kiwi {
     // only for master processor.
     void config::resolve(const std::string &configureFilePath) {
         std::ifstream ifs(configureFilePath);
-        if (!ifs.good()) {
+        if (!ifs.good()) { // todo fixme important, if file not exist, this branch would not enter.
             setError("can not access the configure file: " + configureFilePath);
             return;
         }
@@ -32,14 +32,14 @@ namespace kiwi {
     void config::sync() {
         Bundle bundle = Bundle();
         bundle.newPackBuffer(1024);
-        if (mpiUtils::own_rank == MASTER_PROCESSOR) { // pack data.
+        if (mpiUtils::global_process.own_rank == MASTER_PROCESSOR) { // pack data.
             putConfigData(bundle);
         }
 
         MPI_Bcast(bundle.getPackedData(), bundle.getPackedDataCap(),
                   MPI_BYTE, MASTER_PROCESSOR, MPI_COMM_WORLD); // synchronize config information
 
-        if (mpiUtils::own_rank != MASTER_PROCESSOR) { // unpack data.
+        if (mpiUtils::global_process.own_rank != MASTER_PROCESSOR) { // unpack data.
             getConfigData(bundle);
         }
         bundle.freePackBuffer(); // release memory after usage.

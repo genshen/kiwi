@@ -90,7 +90,7 @@ namespace kiwi {
         /** only show log of specific processor **/
         template<class ... Types>
         inline static void s(const kiwi::RID rank_id, const char *tag, const char *format, Types ... args) {
-            if (kiwi::mpiUtils::own_rank == rank_id) {
+            if (kiwi::mpiUtils::global_process.own_rank == rank_id) {
                 s(tag, format, args...);
             }
         }
@@ -98,7 +98,7 @@ namespace kiwi {
         // information
         template<class ... Types>
         inline static void i(const kiwi::RID rank_id, const char *tag, const char *format, Types ... args) {
-            if (kiwi::mpiUtils::own_rank == rank_id) {
+            if (kiwi::mpiUtils::global_process.own_rank == rank_id) {
                 i(tag, format, args...);
             }
         }
@@ -106,7 +106,7 @@ namespace kiwi {
         // VERBOSE
         template<class ... Types>
         inline static void v(const kiwi::RID rank_id, const char *tag, const char *format, Types ... args) {
-            if (kiwi::mpiUtils::own_rank == rank_id) {
+            if (kiwi::mpiUtils::global_process.own_rank == rank_id) {
                 v(tag, format, args...);
             }
         }
@@ -114,7 +114,7 @@ namespace kiwi {
         // warning
         template<class ... Types>
         inline static void w(const kiwi::RID rank_id, const char *tag, const char *format, Types ... args) {
-            if (kiwi::mpiUtils::own_rank == rank_id) {
+            if (kiwi::mpiUtils::global_process.own_rank == rank_id) {
                 s(tag, format, args...);
             }
         }
@@ -122,7 +122,7 @@ namespace kiwi {
         // error
         template<class ... Types>
         inline static void e(const kiwi::RID rank_id, const char *tag, const char *format, Types ... args) {
-            if (kiwi::mpiUtils::own_rank == rank_id) {
+            if (kiwi::mpiUtils::global_process.own_rank == rank_id) {
                 e(tag, format, args...);
             }
         }
@@ -130,7 +130,7 @@ namespace kiwi {
         // debug
         template<class ... Types>
         inline static void d(const kiwi::RID rank_id, const char *tag, const char *format, Types ... args) {
-            if (kiwi::mpiUtils::own_rank == rank_id) {
+            if (kiwi::mpiUtils::global_process.own_rank == rank_id) {
                 d(tag, format, args...);
             }
         }
@@ -142,7 +142,7 @@ namespace kiwi {
         template<class ... Types>
         static void out_log(const char *level, const char *level_color,
                             const char *tag, const char *format, Types ... args) {
-            std::string out_header = fmt::format(options.log_format, level, mpiUtils::own_rank, tag);
+            std::string out_header = fmt::format(options.log_format, level, mpiUtils::global_process.own_rank, tag);
             std::ostringstream o_string; // todo combine to line 1.
             if (options.colorful) {
                 o_string << level_color;
@@ -165,19 +165,7 @@ namespace kiwi {
     };
 }
 
-/**
-#define LogE(tag, format, ...) { \
-   // kiwi::log.v("[Info]"tag":" format "n", __VA_ARGS__);  \
-  kiwi::log::errorlog(__FILE__, __func__, __LINE__, tag, format, __VA_ARGS__); \
-}
-
-#define DEBUG(message) { \
-  if(kiwi::detail){  \
-     printf("%s,%s,%d:%s\n", __FILE__, __func__, __LINE__, message);\
-  }else {   \
-     printf("%s\n", message);\
-  }  \
-}
-*/
+// kiwi::log.v("[Info]"tag":" format "n", __VA_ARGS__);
+// log(__FILE__, __func__, __LINE__, tag, format, __VA_ARGS__);
 
 #endif //KIWI_LOGS_H

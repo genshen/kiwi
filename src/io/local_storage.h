@@ -38,9 +38,9 @@ namespace kiwi {
          * @param block_size block size used to initialize IOWriter.
          * @param type basic data type(element type).
          */
-        bool make(MPI_Datatype type);
+        bool make(MPI_Datatype type, mpi_process mpi_p);
 
-        void writeHeader(byte *data, size_t size);
+        void writeHeader(byte *data, size_t size, mpi_process mpi_p);
 
     private:
         size_t _global_header_size;

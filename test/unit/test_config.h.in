@@ -11,7 +11,7 @@
 // Only runs on master processor.
 #define SINGLE_PROCESSOR_TEST \
 { \
-  if (kiwi::mpiUtils::own_rank != MASTER_PROCESSOR){ \
+  if (kiwi::mpiUtils::global_process.own_rank != MASTER_PROCESSOR){ \
     return; \
   } \
 }

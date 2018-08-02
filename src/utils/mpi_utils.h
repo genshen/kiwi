@@ -10,13 +10,16 @@
 
 namespace kiwi {
 #define MASTER_PROCESSOR 0
+    struct mpi_process {
+        RID own_rank, all_ranks;
+        MPI_Comm comm;
+    };
 
     class mpiUtils {
     public:
-        // you can use own_rank and all_ranks after called function initialMPI in tiny_fmm.h
-        static RID own_rank;
-        static RID all_ranks;
-        static MPI_Comm global_comm;
+        // you can use global_own_rank and global_all_ranks after called function initialMPI in tiny_fmm.h
+        static mpi_process global_process;
+        static mpi_process local_process;
 
         /**
          * initialize mpi
@@ -30,7 +33,13 @@ namespace kiwi {
 
         static void finishMPI();
 
+        // if the global communicator has changed(default is {MPI_COMM_WORLD}),
+        // this method can be called the re-set the global communicator.
         static void onGlobalCommChanged(MPI_Comm comm);
+
+        // if the local mpi communicator has set or changed (e.g. calling MPI_Comm_group),
+        // this method can be called to change local ranks and local mpi communicator.
+        static void onLocalCommChanged(MPI_Comm comm);
 
     private:
         /**

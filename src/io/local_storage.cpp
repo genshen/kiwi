@@ -13,14 +13,12 @@ kiwi::LocalStorage::LocalStorage(MPI_File pFile, size_t global_header_size,
         : _global_header_size(global_header_size), _local_header_size(local_header_size),
           _block_size(block_size), writer(pFile) {}
 
-bool kiwi::LocalStorage::make(MPI_Datatype type) {
-    if (!writer.make(_global_header_size + _local_header_size * kiwi::mpiUtils::all_ranks,
-                     _block_size, type)) {
-        return false;
-    }
+bool kiwi::LocalStorage::make(MPI_Datatype type, mpi_process mpi_p) {
+    return writer.make(_global_header_size + _local_header_size * mpi_p.all_ranks,
+                       _block_size, type, mpi_p);
 }
 
-void kiwi::LocalStorage::writeHeader(kiwi::byte *data, size_t size) {
-    writer.make(_global_header_size, _local_header_size, MPI_BYTE);
+void kiwi::LocalStorage::writeHeader(kiwi::byte *data, size_t size, mpi_process mpi_p) {
+    writer.make(_global_header_size, _local_header_size, MPI_BYTE, mpi_p);
     writer.write(data, size);
 }

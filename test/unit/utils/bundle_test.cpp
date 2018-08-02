@@ -9,7 +9,7 @@
 TEST(bundle_test_pack, bundle_test) {
     kiwi::Bundle bundle = kiwi::Bundle();
     bundle.newPackBuffer(1024);
-    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) { // pack data.
+    if (kiwi::mpiUtils::global_process.own_rank == MASTER_PROCESSOR) { // pack data.
         bundle.pack(MPI_COMM_WORLD, 1024);
         std::string s = "hello";
         bundle.pack(MPI_COMM_WORLD, s);
@@ -19,7 +19,7 @@ TEST(bundle_test_pack, bundle_test) {
     MPI_Bcast(bundle.getPackedData(), bundle.getPackedDataCap(),
               MPI_BYTE, MASTER_PROCESSOR, MPI_COMM_WORLD); // synchronize config information
 
-    if (kiwi::mpiUtils::own_rank != MASTER_PROCESSOR) { // unpack data.
+    if (kiwi::mpiUtils::global_process.own_rank != MASTER_PROCESSOR) { // unpack data.
         int i, cursor = 0;
         char ch;
         std::string hello;
@@ -36,7 +36,7 @@ TEST(bundle_test_pack, bundle_test) {
 TEST(bundle_test_put, bundle_test) {
     kiwi::Bundle bundle = kiwi::Bundle();
     bundle.newPackBuffer(1024);
-    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) { // pack data.
+    if (kiwi::mpiUtils::global_process.own_rank == MASTER_PROCESSOR) { // pack data.
         bundle.put(1024);
         std::string s = "hello";
         bundle.put(s);
@@ -46,7 +46,7 @@ TEST(bundle_test_put, bundle_test) {
     MPI_Bcast(bundle.getPackedData(), bundle.getPackedDataCap(),
               MPI_BYTE, MASTER_PROCESSOR, MPI_COMM_WORLD); // synchronize config information
 
-    if (kiwi::mpiUtils::own_rank != MASTER_PROCESSOR) { // unpack data.
+    if (kiwi::mpiUtils::global_process.own_rank != MASTER_PROCESSOR) { // unpack data.
         int i, cursor = 0;
         char ch;
         std::string hello;
@@ -63,7 +63,7 @@ TEST(bundle_test_put, bundle_test) {
 TEST(bundle_test_mixed, bundle_test) {
     kiwi::Bundle bundle = kiwi::Bundle();
     bundle.newPackBuffer(1024);
-    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) { // pack data.
+    if (kiwi::mpiUtils::global_process.own_rank == MASTER_PROCESSOR) { // pack data.
         bundle.pack(MPI_COMM_WORLD, 1024);
         std::string s = "hello";
         bundle.put(s);
@@ -73,7 +73,7 @@ TEST(bundle_test_mixed, bundle_test) {
     MPI_Bcast(bundle.getPackedData(), bundle.getPackedDataCap(),
               MPI_BYTE, MASTER_PROCESSOR, MPI_COMM_WORLD); // synchronize config information
 
-    if (kiwi::mpiUtils::own_rank != MASTER_PROCESSOR) { // unpack data.
+    if (kiwi::mpiUtils::global_process.own_rank != MASTER_PROCESSOR) { // unpack data.
         int i, cursor = 0;
         char ch;
         std::string hello;

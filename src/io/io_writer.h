@@ -37,13 +37,13 @@ namespace kiwi {
         * create file view with configured file pointer, data type, header size, etc.
         * @return true for success, false for creating failed.
         */
-        virtual bool make(size_t _skip_size, size_t _block_size, MPI_Datatype etype);
+        virtual bool make(size_t _skip_size, size_t _block_size, MPI_Datatype etype, mpi_process mpi_p);
 
         /**
          *
          * make using default values.
          */
-        virtual bool make(MPI_Datatype etype);
+        virtual bool make(MPI_Datatype etype, mpi_process mpi_p);
 
         /**
           *  write data indicated by b to file pDumpFile.

@@ -36,10 +36,10 @@ public:
 };
 
 TEST(msg_loop_test_dispatch, message_loop_test) {
-    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) { // send message.
+    if (kiwi::mpiUtils::global_process.own_rank == MASTER_PROCESSOR) { // send message.
         int data = 1024;
         MPI_Send(&data, 1, MPI_INT, 1, MESSAGE_LOOP_TEST_TAG, MPI_COMM_WORLD);
-    } else if (kiwi::mpiUtils::own_rank == 1) { // receive message.
+    } else if (kiwi::mpiUtils::global_process.own_rank == 1) { // receive message.
         kiwi::MessageLooper::registerRunner(new MsgGet());
         // a dead loop to listen and dispatch messages.
         // And runners in message loop will be unregistered automatically before loop finished.

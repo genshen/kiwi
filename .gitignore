@@ -1,5 +1,5 @@
 pkg.dep.cmake
-
+vendor
 # Created by .ignore support plugin (hsz.mobi)
 cmake-build-debug
 .idea

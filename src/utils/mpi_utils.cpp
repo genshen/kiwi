@@ -6,12 +6,9 @@
 #include "mpi_utils.h"
 //#include "../pre_config.h" // todo just use  DEV_MODE
 
-using namespace std;
-
 namespace kiwi {
-    RID mpiUtils::own_rank;
-    RID mpiUtils::all_ranks;
-    MPI_Comm mpiUtils::global_comm;
+    mpi_process mpiUtils::global_process;
+    mpi_process mpiUtils::local_process;
 
     void mpiUtils::initialMPI(int argc, char *argv[]) {
         MPI_Init(&argc, &argv);
@@ -29,13 +26,15 @@ namespace kiwi {
     }
 
     void mpiUtils::initMPIRank() {
-        global_comm = MPI_COMM_WORLD;
-        MPI_Comm_size(MPI_COMM_WORLD, &all_ranks);
-        MPI_Comm_rank(MPI_COMM_WORLD, &own_rank);
+        global_process.comm = MPI_COMM_WORLD;
+        MPI_Comm_size(MPI_COMM_WORLD, &global_process.all_ranks);
+        MPI_Comm_rank(MPI_COMM_WORLD, &global_process.own_rank);
 
+        // set local ranks the same as global ranks as default.
+        local_process = global_process;
 #ifdef DEV_MODE
-        if (own_rank == MASTER_PROCESSOR) {
-            cout << "[DEV] running with " << all_ranks << " processors" << endl;
+        if (global_process.own_rank == MASTER_PROCESSOR) {
+            std::cout << "[DEV] running with " << global_process.all_ranks << " processors" << endl;
         }
 #endif
     }
@@ -45,8 +44,14 @@ namespace kiwi {
     }
 
     void mpiUtils::onGlobalCommChanged(MPI_Comm comm) {
-        global_comm = comm;
-        MPI_Comm_size(comm, &all_ranks);
-        MPI_Comm_rank(comm, &own_rank); // get new rank in comm _comm.
+        global_process.comm = comm;
+        MPI_Comm_size(comm, &global_process.all_ranks);
+        MPI_Comm_rank(comm, &global_process.own_rank); // get new rank in comm _comm.
+    }
+
+    void mpiUtils::onLocalCommChanged(MPI_Comm comm) {
+        local_process.comm = comm;
+        MPI_Comm_size(comm, &local_process.all_ranks);
+        MPI_Comm_rank(comm, &local_process.own_rank); // get new rank in comm _comm.
     }
 }
