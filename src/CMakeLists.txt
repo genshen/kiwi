@@ -48,4 +48,7 @@ install(TARGETS ${KIWI_LIB_NAME}
 # install header.
 install(DIRECTORY "./"
         DESTINATION "include"
-        FILES_MATCHING PATTERN "*.h")
+        FILES_MATCHING
+        PATTERN "*.h"
+        PATTERN "*.hpp"
+        )
