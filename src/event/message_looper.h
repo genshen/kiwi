@@ -48,6 +48,14 @@ namespace kiwi {
          */
         static void unRegisterRunner(MessageRunner *runner);
 
+        /**
+         * set message listener communication domain.
+         * MessageLooper on this processor will listen mpi message in this domain.
+         * default value is MPI_COMM_WORLD.
+         * @param comm
+         */
+        static void setGlobalMessageDomain(MPI_Comm comm);
+
     private:
         /**
          * Travel all runners in {@var _runners}, check each runner should be detached.
@@ -56,6 +64,9 @@ namespace kiwi {
          *         False for otherwise, the message loop will continue run.
          */
         static bool shouldExistLoop();
+
+        // message listen communication domain, default value is MPI_COMM_WORLD.
+        static MPI_Comm global_comm_domain;
 
         // collection of all message runners. todo read-write lock.
         static std::list<MessageRunner *> _runners;

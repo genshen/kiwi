@@ -8,6 +8,7 @@
 #include "message_looper.h"
 
 std::list<kiwi::MessageRunner *> kiwi::MessageLooper::_runners; // define of _runners.
+MPI_Comm kiwi::MessageLooper::global_comm_domain = MPI_COMM_WORLD;
 
 void kiwi::MessageLooper::start() {
     while (!shouldExistLoop()) {
@@ -15,10 +16,10 @@ void kiwi::MessageLooper::start() {
         // checkout income message but not receive it.
 #ifdef FUNC_MPI_MPROBE_SUPPORTED
         MPI_Message msg;
-        MPI_Mprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &msg, &status);
+        MPI_Mprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, global_comm_domain, &msg, &status);
 #else
         // Probe for an incoming message from any process with and tag.
-        MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD,
+        MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, global_comm_domain,
                   &status); // probe but not receive. Get blocked if there is no message.
 #endif
 
@@ -35,6 +36,10 @@ void kiwi::MessageLooper::start() {
         }
     }
     // todo clean list.
+}
+
+void kiwi::MessageLooper::setGlobalMessageDomain(MPI_Comm comm) {
+    global_comm_domain = comm;
 }
 
 bool kiwi::MessageLooper::shouldExistLoop() {
