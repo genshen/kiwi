@@ -19,7 +19,7 @@ packages:
 #        link_directories({{.CMAKE_VENDOR_PATH_PKG}}/lib)
     fmt:
       path: https://github.com/fmtlib/fmt.git
-      tag: 4.1.0
+      tag: 5.2.1
       build:
       - RUN {{.CACHE}} cmake {{.SRC_DIR}} -DCMAKE_INSTALL_PREFIX={{.PKG_DIR}}; make -j {{.CORES}}; make install
       cmake_lib: |
