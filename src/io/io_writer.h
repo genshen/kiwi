@@ -45,19 +45,36 @@ namespace kiwi {
          */
         virtual bool make(MPI_Datatype etype, mpi_process mpi_p);
 
+
         /**
-          *  write data indicated by b to file pDumpFile.
-          * @param b  data to be writen.
-          * @param start start position of array b.
-          * @param size length of array b.
-          * @return size that has been writen.
-          */// start from 0.
+         * write data to file using non-collective I/O.
+         * \tparam T the type of data to be written.
+         * \param b the data(buffer) to be written.
+         * \param start start position of array b.
+         * \param size length of array b.
+         * \return size that has been writen.
+         */
         template<typename T>
         size_t write(T *b, size_t start, size_t size);
 
         // write from index 0 of array b.
         template<typename T>
         size_t write(T *b, size_t size);
+
+        /**
+          *  write data specified by b to file pDumpFile using collective IO function.
+          * \tparam T the type of data to be written.
+          * @param b  data to be writen.
+          * @param start start position of array b.
+          * @param size length of array b.
+          * @return size that has been writen.
+          */// start from 0.
+        template<typename T>
+        size_t writeAll(T *b, size_t start, size_t size);
+
+        // write from index 0 of array b.
+        template<typename T>
+        size_t writeAll(T *b, size_t size);
 
         /**
          * get pointer of MPI FILE.
@@ -75,17 +92,28 @@ namespace kiwi {
         const std::string _filename;
     };
 
-
-// methods implements.
+    // methods implements.
     // notice: ths params size should match the give element type: @var _etype.
     template<typename T>
     size_t IOWriter::write(T *b, size_t start, size_t size) {
-        MPI_File_write_all(pFile, b + start, size, _etype, MPI_STATUS_IGNORE);
+        MPI_File_write(pFile, b + start, size, _etype, MPI_STATUS_IGNORE);
         return size;
     }
 
     template<typename T>
     size_t IOWriter::write(T *b, size_t size) {
+        MPI_File_write(pFile, b, size, _etype, MPI_STATUS_IGNORE);
+        return size;
+    }
+
+    template<typename T>
+    size_t IOWriter::writeAll(T *b, size_t start, size_t size) {
+        MPI_File_write_all(pFile, b + start, size, _etype, MPI_STATUS_IGNORE);
+        return size;
+    }
+
+    template<typename T>
+    size_t IOWriter::writeAll(T *b, size_t size) {
         MPI_File_write_all(pFile, b, size, _etype, MPI_STATUS_IGNORE);
         return size;
     }

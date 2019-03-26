@@ -12,9 +12,7 @@ $ pkg install # install fmt lib, google test lib(for linking test) and some head
 2. build
 mpi lib is required for building kiwi lib.
 ```bash
-$ mkdir build
-$ cd build
-$ cmake ../
-$ make -j4
+$ cmake -B./build/ -H./
+$ cmake --build ./build -j 4
 $ make install # only kiwi lib is installed, fmt lib and mpi lib should be linked in your program.
 ```

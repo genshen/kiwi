@@ -20,6 +20,7 @@ TEST(writer_block_test, io_writer_test) {
     for (int i = 0; i < 32; i++) {
         a[i] = 'A' + kiwi::mpiUtils::global_process.own_rank;
     }
-    writer.write(a, 32 * sizeof(int));
+    writer.writeAll(a, 32 * sizeof(int));
+    MPI_File_close(&pFile);
     // todo read data and compare data.
 }
