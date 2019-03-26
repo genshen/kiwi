@@ -19,13 +19,14 @@ TEST(local_storage_header_test, local_storage_test) {
     for (int i = 0; i < 26; i++) {
         data[i] = static_cast<kiwi::byte>('A' + i);
     }
-    storage.writer.write(data, 26);
+    storage.writer.writeAll(data, 26);
 
     for (int i = 0; i < 26; i++) {
         data[i] = static_cast<kiwi::byte>('a' + i);
     }
     storage.writeHeader(data, 26, kiwi::mpiUtils::global_process);
 //     todo read data and compare data.
+    MPI_File_close(&pFile);
 }
 
 TEST(local_storage_cross_block_test, local_storage_test) {
@@ -42,6 +43,7 @@ TEST(local_storage_cross_block_test, local_storage_test) {
     for (int i = 0; i < 32; i++) {
         a[i] = 'A' + kiwi::mpiUtils::global_process.own_rank;
     }
-    storage.writer.write(a, 32);
+    storage.writer.writeAll(a, 32);
     // todo read data and compare data.
+    MPI_File_close(&pFile);
 }

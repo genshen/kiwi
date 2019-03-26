@@ -17,7 +17,6 @@ set(KIWI_TEST_HEADER_FILES
 
 set(KIWI_TEST_SOURCE_FILES
         main.cpp
-        app_test.cpp
         config/config.cpp
         event/message_loop_test.cpp
         io/io_utils_test.cpp

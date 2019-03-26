@@ -20,5 +20,5 @@ bool kiwi::LocalStorage::make(MPI_Datatype type, mpi_process mpi_p) {
 
 void kiwi::LocalStorage::writeHeader(kiwi::byte *data, size_t size, mpi_process mpi_p) {
     writer.make(_global_header_size, _local_header_size, MPI_BYTE, mpi_p);
-    writer.write(data, size);
+    writer.writeAll(data, size);
 }
