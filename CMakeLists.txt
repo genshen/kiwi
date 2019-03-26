@@ -1,43 +1,27 @@
 cmake_minimum_required(VERSION 3.8)
+
+# change to mpicc and mpicxx
+#set(CMAKE_C_COMPILER mpicc -cc=gcc -cxx=g++)
+#set(CMAKE_CXX_COMPILER mpicxx -cc=gcc -cxx=g++)
+
 project(kiwi)
 
 set(CMAKE_CXX_STANDARD 11)
 
 include(config.cmake)
 
-###################
-# MPI dependency #
-###################
-if (KIWI_MPI_ENABLE)
-    find_package(MPI REQUIRED)
-    MESSAGE(STATUS "MPI_INCLUDE dir:" ${MPI_INCLUDE_PATH})
-    MESSAGE(STATUS "MPI_LIBRARIES dir:" ${MPI_LIBRARIES})
 
-    if (MPI_COMPILE_FLAGS)
-        set(COMPILE_FLAGS "${COMPILE_FLAGS} ${MPI_COMPILE_FLAGS}")
-    endif ()
-
-    if (MPI_LINK_FLAGS)
-        set(LINK_FLAGS "${LINK_FLAGS} ${MPI_LINK_FLAGS}")
-    endif ()
-
-    include_directories(${MPI_INCLUDE_PATH})
-
-    set(KIWI_EXTRA_LIBS ${KIWI_EXTRA_LIBS} ${MPI_LIBRARIES}) #add mpi lib
-endif ()
-#### end MPI
-
-include(pkg.dep.cmake)
+include(dependency.cmake)
 
 add_subdirectory(src)
-# utils for building parallel test.
-add_subdirectory(test/utils)
+add_subdirectory(tests/utils)
 
-#if (KIWI_BUILD_DOCS)
-#    add_subdirectory(docs)
-#endif ()
 
-### build test
-if (KIWI_BUILD_TESTS)
-    add_subdirectory(test)
+##############################
+## test configure
+##############################
+if (KIWI_BUILD_TESTS_ENABLE_FLAG)
+    MESSAGE(STATUS "TEST is enabled")
+    enable_testing()
+    add_subdirectory(tests)
 endif ()

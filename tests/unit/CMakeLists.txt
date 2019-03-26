@@ -3,12 +3,9 @@ set(KIWI_TEST_TEMP_STORAGE_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 # configure a header file to pass some of the CMake settings to the source code
 configure_file(
-        "${PROJECT_SOURCE_DIR}/test/unit/test_config.h.in"
-        "${PROJECT_SOURCE_DIR}/test/unit/test_config.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test_config.h.in"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test_config.h"
 )
-
-include_directories(${KIWI_VENDOR_INCLUDE_PATH})
-include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(KIWI_TEST_HEADER_FILES
         test_config.h
@@ -34,11 +31,14 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 add_executable(${KIWI_UINT_TEST_NAME} ${KIWI_TEST_SOURCE_FILES} ${KIWI_TEST_HEADER_FILES})
 
 # Extra linking for the project.
-target_link_libraries(${KIWI_UINT_TEST_NAME} ${KIWI_EXTRA_LIBS} GTest::gtest GTest::gtest_main kiwi)
+# Extra linking for the project.
+target_link_libraries(${KIWI_UINT_TEST_NAME}
+        PRIVATE GTest::gtest GTest::gtest_main ${KIWI_EXTRA_LIBS} ${KIWI_LIB_NAME}
+        )
 
 # This is so you can do 'make test' to see all your tests run, instead of
 # manually running the executable runUnitTests to see those specific tests.
-add_test(NAME kiwiTest COMMAND ${KIWI_UINT_TEST_NAME})
+add_test(NAME ${KIWI_UINT_TEST_NAME} COMMAND ${KIWI_UINT_TEST_NAME})
 
 
 ##########################

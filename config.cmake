@@ -1,21 +1,29 @@
-# configures
+set(KIWI_VERSION "0.2.0-beta")
 set(KIWI_NAME ${PROJECT_NAME}) # project name
 
-# options
-option(KIWI_MPI_ENABLE "Use MPI library" ON) #change this flag to false to disable mpi
-option(KIWI_TEST_MPI_ENABLE "Build test" ON)
-option(KIWI_BUILD_TESTS "Build test" ON)
+#############
+## options ##
+#############
+option(KIWI_OpenMP_ENABLE_FLAG "Use OpenMP" OFF) #change this flag to OFF to disable OpenMP
+option(KIWI_MPI_ENABLE_FLAG "Use MPI library" ON) #change this flag to false to disable mpi
+option(KIWI_BUILD_TESTS_ENABLE_FLAG "Enable building test" ON) # enable test
+option(KIWI_TEST_MPI_ENABLE_FLAG "Enable MPI in test" ON) # enable mpi in test, its value depends on option MPI_ENABLE_FLAG.
 option(KIWI_BUILD_DOCS "Build docs" ON)
 
-# libs
-set(KIWI_LIB_NAME ${KIWI_NAME})
+## architecture ralated values.
+# option(ARCH_SW "Enable sunway athread" OFF) # enable sunway athread if its running on sunway system.
 
-# vendor
-include(pkg.dep.cmake)
-set(KIWI_VENDOR_PATH ${VENDOR_PATH})
-set(KIWI_VENDOR_SRC_PATH ${KIWI_VENDOR_PATH}/src)
-set(KIWI_VENDOR_INCLUDE_PATH ${KIWI_VENDOR_PATH}/include)
-set(KIWI_VENDOR_PKG_PATH ${KIWI_VENDOR_PATH}/pkg)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+
+if (CMAKE_BUILD_TYPE MATCHES "^(Debug|DEBUG|debug)$")
+    set(KIWI_DEBUG_ENABLE_FLAG ON)
+endif ()
+
+#############
+## const ##
+#############
+set(KIWI_LIB_NAME ${KIWI_NAME}) # todo use PARENT_SCOPE to modify globle variable.
 
 # test
-set(KIWI_UINT_TEST_NAME "kiwi-test")
+set(KIWI_UINT_TEST_NAME "kiwi-unit-test")
