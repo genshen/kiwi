@@ -1,5 +1,6 @@
 pkg.dep.cmake
 vendor
+DS_Store
 # Created by .ignore support plugin (hsz.mobi)
 cmake-build-debug
 .idea
