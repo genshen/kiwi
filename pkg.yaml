@@ -45,4 +45,4 @@ build:
   - RUN {{.CACHE}} cmake {{.SRC_DIR}} -DCMAKE_INSTALL_PREFIX={{.PKG_DIR}}; make -j {{.CORES}}; make install
 
 cmake_lib: |
-  include({{.CMAKE_VENDOR_PATH_PKG}}/lib/cmake/kiwi-targets.cmake)
+  find_package(kiwi PATHS {{.CMAKE_VENDOR_PATH_PKG}})

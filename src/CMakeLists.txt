@@ -1,7 +1,5 @@
 include(platform_check.cmake) # platform check
 
-include_directories(${KIWI_VENDOR_INCLUDE_PATH})
-
 set(KIWI_HEADER_FILES
         kiwi_app.h
         config/config.h
@@ -33,7 +31,7 @@ set(KIWI_SOURCE_FILES
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-add_library(${KIWI_LIB_NAME} ${KIWI_SOURCE_FILES} ${KIWI_HEADER_FILES})
+add_library(${KIWI_LIB_NAME} STATIC ${KIWI_SOURCE_FILES} ${KIWI_HEADER_FILES})
 
 target_include_directories(
         ${KIWI_LIB_NAME}
@@ -46,11 +44,18 @@ target_link_libraries(
         ${KIWI_LIB_NAME}
         PUBLIC
         fmt::fmt
-        )
+)
 
 ##########################
 ##### install files
 ##########################
+set(TARGETS_EXPORT_NAME ${KIWI_LIB_NAME}-targets)
+set(KIWI_LIB_CMAKE_DIR lib/cmake/${KIWI_LIB_NAME})
+set(KIWI_LIB_CMAKE_NAMESPACE ${KIWI_LIB_NAME}::)
+set(KIWI_LIB_CMAKE_CONFIG_IN "${KIWI_LIB_NAME}-config.cmake.in")
+set(KIWI_LIB_CMAKE_CONFIG_OUT "${CMAKE_CURRENT_BINARY_DIR}/${KIWI_LIB_NAME}-config.cmake")
+
+# install libs.
 # install libs
 install(TARGETS ${KIWI_LIB_NAME}
         EXPORT ${KIWI_LIB_NAME}-targets
@@ -59,8 +64,6 @@ install(TARGETS ${KIWI_LIB_NAME}
         ARCHIVE DESTINATION lib
         )
 
-install(EXPORT ${KIWI_LIB_NAME}-targets DESTINATION lib/cmake)
-
 # install header.
 install(DIRECTORY "./"
         DESTINATION "include"
@@ -68,3 +71,12 @@ install(DIRECTORY "./"
         PATTERN "*.h"
         PATTERN "*.hpp"
         )
+
+# install export target and config for find_package
+install(EXPORT ${TARGETS_EXPORT_NAME} DESTINATION ${KIWI_LIB_CMAKE_DIR} NAMESPACE ${KIWI_LIB_CMAKE_NAMESPACE}) # todo
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+        ${KIWI_LIB_CMAKE_CONFIG_IN} ${KIWI_LIB_CMAKE_CONFIG_OUT}
+        INSTALL_DESTINATION ${KIWI_LIB_CMAKE_DIR}
+)
+install(FILES ${KIWI_LIB_CMAKE_CONFIG_OUT} DESTINATION ${KIWI_LIB_CMAKE_DIR})

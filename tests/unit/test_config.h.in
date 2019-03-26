@@ -4,7 +4,7 @@
 
 #cmakedefine CATCH2_TEST_ENABLE_FLAG
 #cmakedefine GOOGLE_TEST_ENABLE_FLAG
-#cmakedefine KIWI_TEST_MPI_ENABLE
+#cmakedefine KIWI_TEST_MPI_ENABLE_FLAG
 #cmakedefine KIWI_TEST_TEMP_STORAGE_PATH "${KIWI_TEST_TEMP_STORAGE_PATH}"
 
 // if the test only runs on single process, add this define to the first line of TEST.
