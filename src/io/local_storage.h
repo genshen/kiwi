@@ -26,6 +26,9 @@ namespace kiwi {
         /**
          * config local storage with default values.
          * @param pFile pointer of MPI file.
+         * @param global_header_size header size used to initialize IOWriter in bytes
+         * @param local_header_size the header size for each MPI rank in bytes.
+         * @param block_size  block size used to initialize IOWriter, unit of data type.
          */
         LocalStorage(MPI_File pFile, size_t global_header_size,
                      size_t local_header_size, size_t block_size);
@@ -33,10 +36,8 @@ namespace kiwi {
         /**
          * config local storage whit user specified values.
          * this method should be called once.
-         * @param global_header_size header size used to initialize IOWriter in bytes
-         * @param local_header_size the header size for each MPI rank in bytes.
-         * @param block_size block size used to initialize IOWriter.
          * @param type basic data type(element type).
+         * @param mpi_p mpi process
          */
         bool make(MPI_Datatype type, mpi_process mpi_p);
 
