@@ -8,10 +8,13 @@
 
 TEST(local_storage_header_test, local_storage_test) {
     MPI_File pFile;
-    MPI_File_open(kiwi::mpiUtils::global_process.comm,
-                  KIWI_TEST_TEMP_STORAGE_PATH "/local_storage_test.bin",
-                  MPI_MODE_CREATE | MPI_MODE_WRONLY,
-                  MPI_INFO_NULL, &pFile);
+    int status = MPI_File_open(kiwi::mpiUtils::global_process.comm,
+                               KIWI_TEST_TEMP_STORAGE_PATH "/local_storage_test.bin",
+                               MPI_MODE_CREATE | MPI_MODE_WRONLY,
+                               MPI_INFO_NULL, &pFile);
+    if (status == -1) {
+        GTEST_FATAL_FAILURE_("can not access file in MPI IO.");
+    }
 
     kiwi::LocalStorage storage(pFile, 128, 32, 128);
     storage.make(MPI_BYTE, kiwi::mpiUtils::global_process);
@@ -31,10 +34,13 @@ TEST(local_storage_header_test, local_storage_test) {
 
 TEST(local_storage_cross_block_test, local_storage_test) {
     MPI_File pFile;
-    MPI_File_open(kiwi::mpiUtils::global_process.comm,
-                  KIWI_TEST_TEMP_STORAGE_PATH "/local_storage_cross_block_test.bin",
-                  MPI_MODE_CREATE | MPI_MODE_WRONLY,
-                  MPI_INFO_NULL, &pFile);
+    int status = MPI_File_open(kiwi::mpiUtils::global_process.comm,
+                               KIWI_TEST_TEMP_STORAGE_PATH "/local_storage_cross_block_test.bin",
+                               MPI_MODE_CREATE | MPI_MODE_WRONLY,
+                               MPI_INFO_NULL, &pFile);
+    if (status == -1) {
+        GTEST_FATAL_FAILURE_("can not access file in MPI IO.");
+    }
 
     kiwi::LocalStorage storage(pFile, 0, 0, 32);
     storage.make(MPI_BYTE, kiwi::mpiUtils::global_process);
@@ -101,6 +107,32 @@ TEST(cross_block_struct_test, local_storage_test) {
 
     for (int loop = 0; loop < 1; loop++) {
         storage.writer.write(buffer, buffer_size);
+    }
+    // todo read data and compare data.
+    MPI_File_close(&pFile);
+}
+
+TEST(cross_block_struct_bytes_test, local_storage_test) {
+    MPI_File pFile;
+    int status = MPI_File_open(kiwi::mpiUtils::global_process.comm,
+                               KIWI_TEST_TEMP_STORAGE_PATH "/cross_block_struct_bytes_test.bin",
+                               MPI_MODE_CREATE | MPI_MODE_WRONLY,
+                               MPI_INFO_NULL, &pFile);
+    if (status == -1) {
+        GTEST_FATAL_FAILURE_("can not access file in MPI IO.");
+    }
+
+    const unsigned long block_size = 1;
+    const unsigned long buffer_size = 2 * 1;
+    kiwi::LocalStorage storage(pFile, 0, 0, block_size * sizeof(IO_Test_Data_Type));
+    storage.make(MPI_BYTE, kiwi::mpiUtils::global_process);
+
+    IO_Test_Data_Type buffer[buffer_size];
+
+    memset(buffer, 'A' + kiwi::mpiUtils::global_process.own_rank, buffer_size * sizeof(IO_Test_Data_Type));
+
+    for (int loop = 0; loop < 10; loop++) {
+        storage.writer.write(buffer, buffer_size * sizeof(IO_Test_Data_Type));
     }
     // todo read data and compare data.
     MPI_File_close(&pFile);
