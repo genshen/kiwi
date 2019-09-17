@@ -11,18 +11,6 @@ namespace kiwi {
 
     config::config() : hasError(false) {}
 
-    // only for master processor.
-    void config::resolve(const std::string &configureFilePath) {
-        std::ifstream ifs(configureFilePath);
-        if (!ifs.good()) { // todo fixme important, if file not exist, this branch would not enter.
-            setError("can not access the configure file: " + configureFilePath);
-            return;
-        }
-        auto conf = cpptoml::parse_file(configureFilePath); // todo exception
-        resolveConfig(conf);
-        ifs.close();
-    }
-
     // only for master.
     void config::setError(const std::string &msg) {
         errorMessage = msg;
