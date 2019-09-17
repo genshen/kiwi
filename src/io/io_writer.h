@@ -34,9 +34,13 @@ namespace kiwi {
         IOWriter(MPI_File pFile);
 
         /**
-        * create file view with configured file pointer, data type, header size, etc.
-        * @return true for success, false for creating failed.
-        */
+         * create file view with configured file pointer, data type, header size, etc.
+         * @param _skip_size skipped size in bytes
+         * @param _block_size block size in element type.
+         * @param etype element type.
+         * @param mpi_p mpi process.
+         * @return true for success, false for creating failed.
+         */
         virtual bool make(size_t _skip_size, size_t _block_size, MPI_Datatype etype, mpi_process mpi_p);
 
         /**
