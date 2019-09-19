@@ -60,6 +60,34 @@ TEST(bundle_test_put, bundle_test) {
     bundle.freePackBuffer();
 }
 
+TEST(bundle_test_vector, bundle_test) {
+    kiwi::Bundle bundle = kiwi::Bundle();
+    bundle.newPackBuffer(1024);
+    if (kiwi::mpiUtils::global_process.own_rank == MASTER_PROCESSOR) { // pack data.
+        bundle.put(std::vector<int>{1, 2, 3, 4});
+        std::string s = "hello";
+        bundle.put(s);
+    }
+
+    MPI_Bcast(bundle.getPackedData(), bundle.getPackedDataCap(),
+              MPI_BYTE, MASTER_PROCESSOR, MPI_COMM_WORLD); // synchronize config information
+
+    if (kiwi::mpiUtils::global_process.own_rank != MASTER_PROCESSOR) { // unpack data.
+        int cursor = 0;
+        std::vector<int> vec;
+        std::string hello;
+        bundle.get(cursor, vec);
+        bundle.get(cursor, hello);
+        EXPECT_EQ(vec.size(), 4);
+        EXPECT_EQ(vec[0], 1);
+        EXPECT_EQ(vec[1], 2);
+        EXPECT_EQ(vec[2], 3);
+        EXPECT_EQ(vec[3], 4);
+        EXPECT_EQ(hello, "hello");
+    }
+    bundle.freePackBuffer();
+}
+
 TEST(bundle_test_mixed, bundle_test) {
     kiwi::Bundle bundle = kiwi::Bundle();
     bundle.newPackBuffer(1024);

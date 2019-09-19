@@ -72,6 +72,10 @@ namespace kiwi {
         template<typename T>
         void put(const T &data);
 
+        // append vector data into buffer.
+        template<typename T>
+        void put(const std::vector<T> &data);
+
         // append an array (1d array) into buffer.
         template<typename T>
         void put(int size, const T *data); // todo size in long type.
@@ -82,6 +86,10 @@ namespace kiwi {
         // recover data from buffer.
         template<typename T>
         void get(int &cursor, T &data);
+
+        // recover vector data from buffer.
+        template<typename T>
+        void get(int &cursor, std::vector<T> &data);
 
         // recover an array (1d array) from buffer.
         template<typename T>
@@ -117,6 +125,15 @@ void kiwi::Bundle::put(const T &data) {
 }
 
 template<typename T>
+void kiwi::Bundle::put(const std::vector<T> &data) {
+    const unsigned long len = data.size();
+    put(len);
+    if (len > 0) { // only pack data when there is data in str.
+        put(len, data.data()); // copy without terminated char.
+    }
+}
+
+template<typename T>
 void kiwi::Bundle::put(int size, const T *data) {
     auto *buf = (T *) (buffer + length);
     std::copy(data, data + size, buf); // copy data
@@ -138,6 +155,16 @@ void kiwi::Bundle::get(int &cursor, T &data) {
     T *position = (T *) (buffer + cursor);
     data = position[0];
     cursor += sizeof(T);
+}
+
+template<typename T>
+void kiwi::Bundle::get(int &cursor, std::vector<T> &data) {
+    unsigned long len = 0;
+    get(cursor, len);
+    if (len > 0) {
+        data.resize(len);
+        get(cursor, len, data.data());
+    }
 }
 
 template<typename T>
