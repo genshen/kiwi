@@ -55,7 +55,9 @@ set(KIWI_LIB_CMAKE_NAMESPACE ${KIWI_LIB_NAME}::)
 set(KIWI_LIB_CMAKE_CONFIG_IN "${KIWI_LIB_NAME}-config.cmake.in")
 set(KIWI_LIB_CMAKE_CONFIG_OUT "${CMAKE_CURRENT_BINARY_DIR}/${KIWI_LIB_NAME}-config.cmake")
 
-# install libs.
+# lib alias to makes it possible to always use the namespace version consistently
+add_library(${KIWI_LIB_CMAKE_NAMESPACE}${KIWI_LIB_NAME} ALIAS ${KIWI_LIB_NAME})
+
 # install libs
 install(TARGETS ${KIWI_LIB_NAME}
         EXPORT ${KIWI_LIB_NAME}-targets
