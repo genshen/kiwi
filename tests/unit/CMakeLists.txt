@@ -31,10 +31,18 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 add_executable(${KIWI_UINT_TEST_NAME} ${KIWI_TEST_SOURCE_FILES} ${KIWI_TEST_HEADER_FILES})
 
 # Extra linking for the project.
-# Extra linking for the project.
-target_link_libraries(${KIWI_UINT_TEST_NAME}
-        PRIVATE GTest::gtest GTest::gtest_main ${KIWI_EXTRA_LIBS} ${KIWI_LIB_NAME}
-        )
+if (TARGET GTest::gtest AND TARGET GTest::gtest_main)
+    # googletest is added by `find_package(GTest)`
+    target_link_libraries(${KIWI_UINT_TEST_NAME}
+            PRIVATE GTest::gtest GTest::gtest_main ${KIWI_EXTRA_LIBS} ${KIWI_LIB_NAME}
+            )
+else ()
+    # googletest is added by `add_subdirectory`
+    target_link_libraries(${KIWI_UINT_TEST_NAME}
+            PRIVATE gtest gtest_main ${KIWI_EXTRA_LIBS} ${KIWI_LIB_NAME}
+            )
+endif ()
+
 
 # This is so you can do 'make test' to see all your tests run, instead of
 # manually running the executable runUnitTests to see those specific tests.
