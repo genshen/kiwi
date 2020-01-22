@@ -58,27 +58,30 @@ set(KIWI_LIB_CMAKE_CONFIG_OUT "${CMAKE_CURRENT_BINARY_DIR}/${KIWI_LIB_NAME}-conf
 # lib alias to makes it possible to always use the namespace version consistently
 add_library(${KIWI_LIB_CMAKE_NAMESPACE}${KIWI_LIB_NAME} ALIAS ${KIWI_LIB_NAME})
 
-# install libs
-install(TARGETS ${KIWI_LIB_NAME}
-        EXPORT ${KIWI_LIB_NAME}-targets
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        )
+if (${KIWI_INSTALL})
+    # install libs
+    install(TARGETS ${KIWI_LIB_NAME}
+            EXPORT ${KIWI_LIB_NAME}-targets
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+            )
 
-# install header.
-install(DIRECTORY "./"
-        DESTINATION "include"
-        FILES_MATCHING
-        PATTERN "*.h"
-        PATTERN "*.hpp"
-        )
+    # install header.
+    install(DIRECTORY "./"
+            DESTINATION "include"
+            FILES_MATCHING
+            PATTERN "*.h"
+            PATTERN "*.hpp"
+            )
 
-# install export target and config for find_package
-install(EXPORT ${TARGETS_EXPORT_NAME} DESTINATION ${KIWI_LIB_CMAKE_DIR} NAMESPACE ${KIWI_LIB_CMAKE_NAMESPACE}) # todo
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-        ${KIWI_LIB_CMAKE_CONFIG_IN} ${KIWI_LIB_CMAKE_CONFIG_OUT}
-        INSTALL_DESTINATION ${KIWI_LIB_CMAKE_DIR}
-)
-install(FILES ${KIWI_LIB_CMAKE_CONFIG_OUT} DESTINATION ${KIWI_LIB_CMAKE_DIR})
+    # install export target and config for find_package
+    install(EXPORT ${TARGETS_EXPORT_NAME} DESTINATION ${KIWI_LIB_CMAKE_DIR} NAMESPACE ${KIWI_LIB_CMAKE_NAMESPACE}) # todo
+    include(CMakePackageConfigHelpers)
+    configure_package_config_file(
+            ${KIWI_LIB_CMAKE_CONFIG_IN} ${KIWI_LIB_CMAKE_CONFIG_OUT}
+            INSTALL_DESTINATION ${KIWI_LIB_CMAKE_DIR}
+    )
+    install(FILES ${KIWI_LIB_CMAKE_CONFIG_OUT} DESTINATION ${KIWI_LIB_CMAKE_DIR})
+
+endif ()

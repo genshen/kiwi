@@ -10,6 +10,13 @@ option(KIWI_BUILD_TESTS_ENABLE_FLAG "Enable building test" ON) # enable test
 option(KIWI_TEST_MPI_ENABLE_FLAG "Enable MPI in test" ON) # enable mpi in test, its value depends on option MPI_ENABLE_FLAG.
 option(KIWI_BUILD_DOCS "Build docs" ON)
 
+set(MASTER_PROJECT OFF)
+if (${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+    set(MASTER_PROJECT ON)
+endif ()
+
+option(KIWI_INSTALL "Generate the install target." ${MASTER_PROJECT})
+
 ## architecture ralated values.
 # option(ARCH_SW "Enable sunway athread" OFF) # enable sunway athread if its running on sunway system.
 

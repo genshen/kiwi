@@ -52,8 +52,10 @@ add_test(NAME ${KIWI_UINT_TEST_NAME} COMMAND ${KIWI_UINT_TEST_NAME})
 ##########################
 ##### install files
 ##########################
-install(TARGETS ${KIWI_UINT_TEST_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        )
+if (${KIWI_INSTALL})
+    install(TARGETS ${KIWI_UINT_TEST_NAME}
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+            )
+endif ()
