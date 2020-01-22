@@ -40,11 +40,21 @@ target_include_directories(
         $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(
-        ${KIWI_LIB_NAME}
-        PUBLIC
-        fmt::fmt
-)
+set(IMP OFF)
+get_target_property(IMP fmt::fmt IMPORTED)
+if (NOT ${IMP})
+    # if fmt is added by add_subdirectory
+    target_link_libraries(
+            ${KIWI_LIB_NAME}
+            PUBLIC
+            $<BUILD_INTERFACE:fmt::fmt>)
+else ()
+    target_link_libraries(
+            ${KIWI_LIB_NAME}
+            PUBLIC
+            fmt::fmt)
+endif ()
+
 
 ##########################
 ##### install files
