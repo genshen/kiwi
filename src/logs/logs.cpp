@@ -26,7 +26,7 @@ bool kiwi::logs::setLogFile(const std::string &filename) {
     return stream.good();
 }
 
-void kiwi::logs::setCorlorFul(bool with_color) {
+void kiwi::logs::setColorFul(bool with_color) {
     if (!options.log_file) {
         options.colorful = with_color;
     }

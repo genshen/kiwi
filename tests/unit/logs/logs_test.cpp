@@ -17,7 +17,7 @@ TEST(logs_print_test, logs_test) {
 
 TEST(logs_file_test, logs_test) {
     kiwi::logs::setLogFile(KIWI_TEST_TEMP_STORAGE_PATH "/log_file_test.txt"); // todo
-    kiwi::logs::setCorlorFul(true); // colorful will be invalid here.
+    kiwi::logs::setColorFul(true); // colorful will be invalid here.
     kiwi::logs::s("tag", "{0}s-{1}\n", "hee", 100);
     kiwi::logs::v("tag", "{0}s-{1}\n", "hee", 100);
     kiwi::logs::i("tag", "{0}s-{1}\n", "hee", 100);

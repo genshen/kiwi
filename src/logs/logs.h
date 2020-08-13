@@ -35,7 +35,7 @@ namespace kiwi {
          * (there is no color if it output into file no matter what the value of variable colorful is.)
          * @param with_color true for colorful when outputting to console/terminal.
          */
-        static void setCorlorFul(bool with_color);
+        static void setColorFul(bool with_color);
 
         // todo format, buffer.
         /**
