@@ -33,6 +33,12 @@ public:
         message_received = true;
         std::cout << message_data << std::endl;
     }
+
+    void onMessage(MPI_Status *pStatus, MPI_Message *pMessage) override {
+        MPI_Mrecv(&message_data, 1, MPI_INT, pMessage, MPI_STATUS_IGNORE);
+        message_received = true;
+        std::cout << message_data << std::endl;
+    }
 };
 
 TEST(msg_loop_test_dispatch, message_loop_test) {
