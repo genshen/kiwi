@@ -7,6 +7,7 @@
 
 #include <mpi.h>
 #include <string>
+#include <vector>
 #include "data_def.h"
 
 /**
