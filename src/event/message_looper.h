@@ -58,6 +58,11 @@ namespace kiwi {
      */
     static void setGlobalMessageDomain(MPI_Comm comm);
 
+    /**
+     * \return return number of runners
+     */
+    inline static size_t countRunners() { return _runners.size(); }
+
   private:
     /**
      * Travel all runners in {@var _runners}, check each runner should be detached.
