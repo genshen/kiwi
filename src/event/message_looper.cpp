@@ -69,7 +69,7 @@ void kiwi::MessageLooper::unRegisterRunner(MessageRunner *mr) {
     MessageRunner *pItem = *iter;
     if (pItem == mr) {
       pItem->onDetach(); // call onDetach of this runner before destroying it.
-      delete pItem;
+                         // delete pItem; // it should del by user
       iter = _runners.erase(iter);
     } else {
       iter++;
