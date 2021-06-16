@@ -39,6 +39,15 @@ namespace kiwi {
      */
     bool make(MPI_Datatype type, mpi_process mpi_p);
 
+    /**
+     * write file head for every processes. Each process occupy one block
+     * \param data_type block data type
+     * \param data data pointer
+     * \param size size of data to be written
+     * \param mpi_p mpi information
+     */
+    void writeHeader(MPI_Datatype data_type, void *data, size_t size, mpi_process mpi_p);
+
     void writeHeader(byte *data, size_t size, mpi_process mpi_p);
 
   private:
