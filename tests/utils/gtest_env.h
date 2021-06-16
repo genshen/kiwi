@@ -9,20 +9,18 @@
 #include <utils/mpi_utils.h>
 
 namespace kiwi {
-    class MPIEnvironment : public ::testing::Environment {
-    public:
-        void SetUp() override {
-            char **argv = nullptr;
-            int argc = 0;
-            kiwi::mpiUtils::initialMPI(argc, argv);
-        }
+  class MPIEnvironment : public ::testing::Environment {
+  public:
+    void SetUp() override {
+      char **argv = nullptr;
+      int argc = 0;
+      kiwi::mpiUtils::initialMPI(argc, argv);
+    }
 
-        void TearDown() override {
-            kiwi::mpiUtils::finishMPI();
-        }
+    void TearDown() override { kiwi::mpiUtils::finishMPI(); }
 
-        ~MPIEnvironment() override = default;
-    };
-}
+    ~MPIEnvironment() override = default;
+  };
+} // namespace kiwi
 
-#endif //KIWI_GTEST_ENV_H
+#endif // KIWI_GTEST_ENV_H

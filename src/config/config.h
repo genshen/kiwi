@@ -7,48 +7,47 @@
 
 #include <memory>
 #include <string>
+
 #include "../utils/bundle.h"
 
 namespace kiwi {
 
+  /**
+   * config component.
+   * new config -> resolve() -> resolveConfig -> sync()
+   */
+  class config {
+  public:
     /**
-     * config component.
-     * new config -> resolve() -> resolveConfig -> sync()
+     * Error flag while resolving toml config file.
      */
-    class config {
-    public:
-        /**
-         * Error flag while resolving toml config file.
-         */
-        bool hasError;
+    bool hasError;
 
-        /**
-         * The error message while resolving config.
-         */
-        std::string errorMessage;
+    /**
+     * The error message while resolving config.
+     */
+    std::string errorMessage;
 
-        // make a new instance without resolving config file.
-//        config *newInstance();
+    // make a new instance without resolving config file.
+    //        config *newInstance();
 
-//        config *newInstance(const std::string &configureFilePath);
+    //        config *newInstance(const std::string &configureFilePath);
 
-        // sync config data to all processors in MPI_COMM_WORLD
-        void sync(const unsigned int buffer_size = 1024);
+    // sync config data to all processors in MPI_COMM_WORLD
+    void sync(const unsigned int buffer_size = 1024);
 
-        void setError(const std::string &msg);
+    void setError(const std::string &msg);
 
-    protected:
+  protected:
+    config();
 
-        config();
+    // you can override the method to pack data into buffer.
+    virtual void putConfigData(Bundle &bundle) = 0;
 
-        // you can override the method to pack data into buffer.
-        virtual void putConfigData(Bundle &bundle) = 0;
+    // you can override the method to unpack data into buffer.
+    virtual void getConfigData(kiwi::Bundle &bundle) = 0;
+  };
 
-        // you can override the method to unpack data into buffer.
-        virtual void getConfigData(kiwi::Bundle &bundle) = 0;
+} // namespace kiwi
 
-    };
-
-}
-
-#endif //KIWI_CONFIG_H
+#endif // KIWI_CONFIG_H

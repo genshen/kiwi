@@ -9,11 +9,11 @@
 
 // if the test only runs on single process, add this define to the first line of TEST.
 // Only runs on master processor.
-#define SINGLE_PROCESSOR_TEST \
-{ \
-  if (kiwi::mpiUtils::global_process.own_rank != MASTER_PROCESSOR){ \
-    return; \
-  } \
-}
+#define SINGLE_PROCESSOR_TEST                                                                                          \
+  {                                                                                                                    \
+    if (kiwi::mpiUtils::global_process.own_rank != MASTER_PROCESSOR) {                                                 \
+      return;                                                                                                          \
+    }                                                                                                                  \
+  }
 
 #endif // KIWI_TEST_CONFIG_H

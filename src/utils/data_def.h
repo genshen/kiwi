@@ -6,10 +6,10 @@
 #define KIWI_DATA_DEF_H
 
 namespace kiwi {
-    typedef unsigned char byte;
-    typedef long _type_io_offset;
+  typedef unsigned char byte;
+  typedef long _type_io_offset;
 
-    typedef int RID; // rank id of MPI.
-}
+  typedef int RID; // rank id of MPI.
+} // namespace kiwi
 
-#endif //CRYSTALMD_DATA_DEF_H
+#endif // CRYSTALMD_DATA_DEF_H
