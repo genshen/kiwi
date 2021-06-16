@@ -33,7 +33,7 @@ namespace kiwi {
 //        config *newInstance(const std::string &configureFilePath);
 
         // sync config data to all processors in MPI_COMM_WORLD
-        void sync();
+        void sync(const unsigned int buffer_size = 1024);
 
         void setError(const std::string &msg);
 

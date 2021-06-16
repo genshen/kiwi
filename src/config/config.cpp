@@ -17,9 +17,9 @@ namespace kiwi {
         hasError = true;
     }
 
-    void config::sync() {
+    void config::sync(const unsigned int buffer_size) {
         Bundle bundle = Bundle();
-        bundle.newPackBuffer(1024);
+        bundle.newPackBuffer(buffer_size);
         if (mpiUtils::global_process.own_rank == MASTER_PROCESSOR) { // pack data.
             putConfigData(bundle);
         }
