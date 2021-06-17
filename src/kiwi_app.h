@@ -8,68 +8,66 @@
 #include "utils/mpi_utils.h"
 
 namespace kiwi {
+  /**
+   * lifecycle of kiwi:
+   * beforeCreate() -> create -> onCreate() -> prepare()
+   * <!-- > start()--> -> onStart() -> beforeDestroy() -> destroy -> onDestroy()
+   */
+  class kiwiApp {
+  public:
     /**
-     * lifecycle of kiwi:
-     * beforeCreate() -> create -> onCreate() -> prepare()
-     * <!-- > start()--> -> onStart() -> beforeDestroy() -> destroy -> onDestroy()
+     * set @var _mpi_thread_type for MPI thread support.
+     * This function must be called before function create.(@see implement of function run)
+     *
+     * @param type predefined variable in mpi.h, can be:
+     * MPI_THREAD_SINGLE, MPI_THREAD_FUNNELED, MPI_THREAD_SERIALIZED or MPI_THREAD_MULTIPLE.
      */
-    class kiwiApp {
-    public:
+    void setMPIThreadSupport(short type); // todo runtime exception.
 
-        /**
-         * set @var _mpi_thread_type for MPI thread support.
-         * This function must be called before function create.(@see implement of function run)
-         *
-         * @param type predefined variable in mpi.h, can be:
-         * MPI_THREAD_SINGLE, MPI_THREAD_FUNNELED, MPI_THREAD_SERIALIZED or MPI_THREAD_MULTIPLE.
-         */
-        void setMPIThreadSupport(short type); // todo runtime exception.
+    void run(int argc, char *argv[]);
 
-        void run(int argc, char *argv[]);
+    /**
+     * exit this program before finishing running.
+     * please call this function after @link#create
+     * @param code  exit code.
+     */
+    void abort(int code);
 
-        /**
-         * exit this program before finishing running.
-         * please call this function after @link#create
-         * @param code  exit code.
-         */
-        void abort(int code);
+  protected:
+    virtual bool beforeCreate(int argc, char *argv[]);
 
-    protected:
+    virtual void onCreate(){};
 
-        virtual bool beforeCreate(int argc, char *argv[]);
+    virtual bool prepare();
 
-        virtual void onCreate() {};
+    virtual void onStart(){};
 
-        virtual bool prepare();
+    virtual void beforeDestroy(){};
 
-        virtual void onStart() {};
+    virtual void onFinish(){};
 
-        virtual void beforeDestroy() {};
+    // do not use mpi in onDestroy.
+    virtual void onDestroy(){};
 
-        virtual void onFinish() {};
+  private:
+    /**
+     * value of _mpi_thread_type can be below values, which is predefined in mpi.h
+     * MPI_THREAD_SINGLE: Only one thread
+     * MPI_THREAD_FUNNELED: Only main thread will make MPI calls
+     * MPI_THREAD_SERIALIZED: Only one MPI call at time
+     * MPI_THREAD_MULTIPLE: Multiple threads with multiple calls
+     */
+    short _mpi_thread_type = MPI_THREAD_SINGLE;
 
-        // do not use mpi in onDestroy.
-        virtual void onDestroy() {};
+    // Initialize mpi env for application.
+    bool create(int argc, char *argv[]);
 
-    private:
-        /**
-         * value of _mpi_thread_type can be below values, which is predefined in mpi.h
-         * MPI_THREAD_SINGLE: Only one thread
-         * MPI_THREAD_FUNNELED: Only main thread will make MPI calls
-         * MPI_THREAD_SERIALIZED: Only one MPI call at time
-         * MPI_THREAD_MULTIPLE: Multiple threads with multiple calls
-         */
-        short _mpi_thread_type = MPI_THREAD_SINGLE;
+    // start app
+    void start();
 
-        // Initialize mpi env for application.
-        bool create(int argc, char *argv[]);
+    // destroy
+    void destroy();
+  };
+} // namespace kiwi
 
-        // start app
-        void start();
-
-        // destroy
-        void destroy();
-    };
-}
-
-#endif //KIWI_KIWI_APP_H
+#endif // KIWI_KIWI_APP_H
