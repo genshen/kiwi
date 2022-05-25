@@ -4,8 +4,8 @@
 
 #include "logs.h"
 
-kiwi::logs::LogOptions kiwi::logs::
-options{async : false, detail : true, colorful : false, log_file : false, log_format : "{0} P{1}:{2}:"};
+kiwi::logs::LogOptions kiwi::logs::options{
+    .async = false, .detail = true, .colorful = false, .log_file = false, .log_format = "{0} P{1}:{2}:"};
 
 std::ofstream kiwi::logs::stream;
 
