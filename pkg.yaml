@@ -12,4 +12,4 @@ target: "kiwi"
 dependencies:
   packages:
     github.com/google/googletest: {version: release-1.12.1, target: GTest}
-    github.com/fmtlib/fmt: {version: 6.1.2, target: fmt, features: ["FMT_TEST=OFF", "FMT_DOC=OFF"]}
+    github.com/fmtlib/fmt: {version: 11.1.4, target: fmt, features: ["FMT_TEST=OFF", "FMT_DOC=OFF"]}
